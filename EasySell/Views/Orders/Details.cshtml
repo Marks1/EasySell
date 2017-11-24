@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+   <table>
+    @foreach (var orderedgood in ViewBag.OrderedGoods)
+    {
+       <tr>
+           <td>
+               @orderedgood.GoodID
+           </td>
+           <td>
+               @orderedgood.SellPrice
+           </td>
+       </tr>
+    }
+   </table>
+</div>
+
+
+
+<div>
+    <h4>Packages</h4>
+    <table>
+        @foreach (var package in ViewBag.Packages)
+        {
+            <tr>
+                <td>
+                    @package.OrderID
+                </td>
+                <td>
+                    @package.ProviderID
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+

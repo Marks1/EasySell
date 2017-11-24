@@ -1,0 +1,59 @@
+﻿@model EasySell.Models.Package
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Package</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SerialNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SerialNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProviderID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProviderID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoneySpend)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MoneySpend)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoneyReceived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MoneyReceived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
