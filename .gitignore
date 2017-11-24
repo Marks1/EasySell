@@ -1,2 +1,6 @@
 
 EasySell/Web.config
+.vs/*
+EasySell/bin/*
+EasySell/obj/*
+packages/*

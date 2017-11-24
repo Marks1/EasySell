@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Lin_W_Dir\Steadfast\Transformer\EasySell\EasySell\Models\EasySellData.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Lin_W_Dir\Steadfast\Transformer\SmartSell\EasySell\Models\EasySellData.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

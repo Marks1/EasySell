@@ -17,7 +17,7 @@ namespace EasySell.Models
         public int Id { get; set; }
         public int GoodID { get; set; }
         public Nullable<int> OrderID { get; set; }
-        public double BugPrice { get; set; }
         public int Quantity { get; set; }
+        public double Cost { get; set; }
     }
 }

@@ -10,9 +10,12 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="500" />
           <Property Name="Phone" Type="nchar" MaxLength="20" />
+          <Property Name="EMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="GoodInfo">
           <Key>
@@ -32,6 +35,9 @@
           <Property Name="StatusID" Type="int" Nullable="false" />
           <Property Name="order_createtime" Type="datetime" Nullable="false" />
           <Property Name="order_closetime" Type="datetime" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+          <Property Name="IsBillSent" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderedGood">
           <Key>
@@ -41,7 +47,7 @@
           <Property Name="GoodID" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
-          <Property Name="SellPrice" Type="float" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderStatus">
           <Key>
@@ -75,7 +81,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GoodID" Type="int" Nullable="false" />
           <Property Name="OrderID" Type="int" />
-          <Property Name="BugPrice" Type="float" Nullable="false" />
+          <Property Name="Cost" Type="float" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
@@ -117,9 +123,12 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="GoodInfo">
           <Key>
@@ -139,6 +148,9 @@
           <Property Name="StatusID" Type="Int32" Nullable="false" />
           <Property Name="order_createtime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="order_closetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <Property Name="IsBillSent" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderedGood">
           <Key>
@@ -148,7 +160,7 @@
           <Property Name="GoodID" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="SellPrice" Type="Double" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderStatu">
           <Key>
@@ -182,8 +194,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GoodID" Type="Int32" Nullable="false" />
           <Property Name="OrderID" Type="Int32" />
-          <Property Name="BugPrice" Type="Double" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Cost" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -202,9 +214,12 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="easysellModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -222,6 +237,9 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="easysellModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="IsBillSent" ColumnName="IsBillSent" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
                 <ScalarProperty Name="order_closetime" ColumnName="order_closetime" />
                 <ScalarProperty Name="order_createtime" ColumnName="order_createtime" />
                 <ScalarProperty Name="StatusID" ColumnName="StatusID" />
@@ -233,7 +251,7 @@
           <EntitySetMapping Name="OrderedGoods">
             <EntityTypeMapping TypeName="easysellModel.OrderedGood">
               <MappingFragment StoreEntitySet="OrderedGood">
-                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="GoodID" ColumnName="GoodID" />
@@ -272,8 +290,8 @@
           <EntitySetMapping Name="Storages">
             <EntityTypeMapping TypeName="easysellModel.Storage">
               <MappingFragment StoreEntitySet="Storage">
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="BugPrice" ColumnName="BugPrice" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="GoodID" ColumnName="GoodID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

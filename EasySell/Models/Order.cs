@@ -19,5 +19,8 @@ namespace EasySell.Models
         public int StatusID { get; set; }
         public System.DateTime order_createtime { get; set; }
         public System.DateTime order_closetime { get; set; }
+        public int Priority { get; set; }
+        public int IsActive { get; set; }
+        public int IsBillSent { get; set; }
     }
 }
