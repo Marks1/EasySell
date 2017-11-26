@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<EasySell.Models.Order>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Orders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,54 +10,6 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.customerID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StatusID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.order_createtime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.order_closetime)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.customerID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StatusID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.order_createtime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.order_closetime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |
-            @Html.ActionLink("下单", "PutOrder", new { id = item.Id }) |
-            @Html.ActionLink("配货", "MapOrder", new { id = item.Id }) |
-            @Html.ActionLink("发货", "Delivery", new { id = item.Id })
-        </td>
-    </tr>
-}
-
-</table>
-
-
-
-
-
 
 
 <div class="">
@@ -155,11 +107,12 @@
                                 </td>
                                 <td>
                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |                                    
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |               
+                    
                                     <a href="@Url.Action("PutOrder", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 下单 </a>
                                     <a href="@Url.Action("MapOrder", "MapOrder", new { id = item.Id })" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> 配货 </a>
                                     <a href="@Url.Action("Delivery", "Delivery", new { id = item.Id })" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> 发货 </a>
+                                    <a href="@Url.Action("Receipts", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
                                 </td>
                             </tr>
                         }

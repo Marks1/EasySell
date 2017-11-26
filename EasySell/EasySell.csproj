@@ -433,6 +433,7 @@
     <Content Include="Views\Storages\Details.cshtml" />
     <Content Include="Views\Storages\Edit.cshtml" />
     <Content Include="Views\Storages\Index.cshtml" />
+    <Content Include="Views\Customers\CustomerProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
