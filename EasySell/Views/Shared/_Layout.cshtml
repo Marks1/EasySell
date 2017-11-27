@@ -9,7 +9,8 @@
 
     <title>EasySell </title>
 
-    @Styles.Render("~/bundles/vendors/css")
+    @Styles.Render("~/bundles/vendorscss")
+    @Styles.Render("~/bundles/customcss")
 </head>
 
 <body class="nav-md footer_fixed">
@@ -213,9 +214,9 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/vendors/js")
-    @Scripts.Render("~/bundles/vendors/customjs")
-    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/vendorsjs")
+    @Scripts.Render("~/bundles/customjs")
+    @Scripts.Render("~/bundles/easyselljs")
 
 
 </body>

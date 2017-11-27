@@ -296,8 +296,6 @@
     <Content Include="Static\vendors\css\bootstrap-progressbar-3.3.4.min.css" />
     <Content Include="Static\vendors\css\bootstrap.css" />
     <Content Include="Static\vendors\css\bootstrap.min.css" />
-    <Content Include="Static\vendors\css\custom.css" />
-    <Content Include="Static\vendors\css\custom.min.css" />
     <Content Include="Static\vendors\css\daterangepicker.css" />
     <Content Include="Static\vendors\css\font-awesome.css" />
     <Content Include="Static\vendors\css\font-awesome.min.css" />
