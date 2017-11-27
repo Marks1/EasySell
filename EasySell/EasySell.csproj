@@ -296,6 +296,8 @@
     <Content Include="Static\vendors\css\bootstrap-progressbar-3.3.4.min.css" />
     <Content Include="Static\vendors\css\bootstrap.css" />
     <Content Include="Static\vendors\css\bootstrap.min.css" />
+    <Content Include="Static\vendors\css\custom.css" />
+    <Content Include="Static\vendors\css\custom.min.css" />
     <Content Include="Static\vendors\css\daterangepicker.css" />
     <Content Include="Static\vendors\css\font-awesome.css" />
     <Content Include="Static\vendors\css\font-awesome.min.css" />
@@ -312,6 +314,8 @@
     <Content Include="Static\vendors\js\bootstrap.min.js" />
     <Content Include="Static\vendors\js\Chart.js" />
     <Content Include="Static\vendors\js\Chart.min.js" />
+    <Content Include="Static\vendors\js\custom.js" />
+    <Content Include="Static\vendors\js\custom.min.js" />
     <Content Include="Static\vendors\js\date.js" />
     <Content Include="Static\vendors\js\daterangepicker.js" />
     <Content Include="Static\vendors\js\fastclick.js" />

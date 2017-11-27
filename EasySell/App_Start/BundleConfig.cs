@@ -14,10 +14,7 @@ namespace EasySell
             "~/Static/vendors/css", "*.css"));
             
 
-            bundles.Add(new ScriptBundle("~/bundles/customjs").IncludeDirectory(
-            "~/Static/vendors", "*.js"));
-            bundles.Add(new ScriptBundle("~/bundles/customcss").IncludeDirectory(
-            "~/Static/vendors", "*.css"));
+
 
             bundles.Add(new ScriptBundle("~/bundles/easyselljs").IncludeDirectory(
                         "~/Static/js", "*.js"));
