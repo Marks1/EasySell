@@ -5,17 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Order", "Create");
 </p>
-
+<p>
+    @Html.ActionLink("All Order", "Index", new { status = 0 }, null);
+</p>
 
 <div class="">
     <div class="page-title">
         <div class="title_left">
-            <h3>Order <small>Active</small></h3>
+            <h3>订单 <small>Active</small></h3>
         </div>
         <div class="title_right">
             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -33,31 +34,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="x_panel">
-                <div class="x_title">
-                    <h2>Order</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li>
-                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="#">Settings 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Settings 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
-                    <p>Actice Orders</p>
                     <!-- start project list -->
                     <table class="table table-striped projects">
                         <thead>
@@ -107,12 +84,9 @@
                                 </td>
                                 <td>
                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |               
-                    
-                                    <a href="@Url.Action("PutOrder", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 下单 </a>
-                                    <a href="@Url.Action("MapOrder", "MapOrder", new { id = item.Id })" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> 配货 </a>
-                                    <a href="@Url.Action("Delivery", "Delivery", new { id = item.Id })" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> 发货 </a>
-                                    <a href="@Url.Action("Receipts", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) 
+                                    <a href="@Url.Action("ProcessOrder", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 处理订单 </a>                                
+                                    <a href="@Url.Action("Invoice", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
                                 </td>
                             </tr>
                         }

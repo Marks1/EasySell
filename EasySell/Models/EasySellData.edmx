@@ -16,6 +16,7 @@
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="IsActive" Type="int" Nullable="false" />
+          <Property Name="CreateAt" Type="datetime" />
         </EntityType>
         <EntityType Name="GoodInfo">
           <Key>
@@ -129,6 +130,7 @@
           <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="GoodInfo">
           <Key>
@@ -214,6 +216,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="easysellModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="EMail" ColumnName="EMail" />

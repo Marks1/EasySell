@@ -5,48 +5,106 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Project Detail <small> design</small></h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create", new { OrderID = ViewBag.OrderID })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.GoodID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th></th>
-    </tr>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.GoodID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |
-        </td>
-    </tr>
-}
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-9 col-sm-9 col-xs-12">                        
+                        <h2>Orders</h2>
+                        <p>
+                            @Html.ActionLink("Create New", "Create", new { OrderID = ViewBag.OrderID })
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            #
+                                        </th>
+                                        <th class="column-title">Name </th>
+                                        <th class="column-title">Price </th>
+                                        <th class="column-title">Amount </th>
+                                        <th class="column-title no-link last">
+                                            <span class="nobr">Action</span>
+                                        </th>
+                                        <th class="bulk-actions" colspan="7">
+                                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="even pointer">
+                                        <td class="a-center ">
+                                            
+                                        </td>
+                                        <td class=" ">@Html.DisplayFor(modelItem => item.GoodID)</td>
+                                        <td class=" ">￥ @Html.DisplayFor(modelItem => item.Price) </td>
+                                        <td class=" ">@Html.DisplayFor(modelItem => item.Quantity) </td>
+                                        <td class=" last">
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end of user messages -->
 
-</table>
+                    </div>
+                    <!-- start project-detail sidebar -->
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <section class="panel">
+                            <div class="x_title">
+                                <h2>Order Info</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="project_detail">
+                                    <p class="title">Client Name</p>
+                                    <p>linshen</p>
+                                    <p class="title">Address</p>
+                                    <p>禁止路 111号</p>
+                                    <p class="title">Phone</p>
+                                    <p>13913933333</p>
+                                </div>
+                                <br />
+                                <div class="text-center mtop20">
+                                    <a href="@Url.Action("ProcessOrder", "Orders", new { id = ViewBag.OrderID })" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> 配发货 </a>
+                                    <a href="@Url.Action("Receipts", "Orders", new { id = ViewBag.OrderID })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- end project-detail sidebar -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

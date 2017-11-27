@@ -23,9 +23,9 @@ namespace EasySell.Controllers
                 case 0: // all
                     return View(await db.Orders.ToListAsync());
                 case 1: // opened only
-                    return View(await db.Orders.Where(d=>d.StatusID==1).ToListAsync());
+                    return View(await db.Orders.Where(d=>d.IsActive==1).ToListAsync());
                 case 2: // completed only
-                    return View(await db.Orders.Where(d => d.StatusID == 2).ToListAsync());
+                    return View(await db.Orders.Where(d => d.IsActive == 0).ToListAsync());
                 default:
                     return View(await db.Orders.ToListAsync());
             }            
@@ -36,6 +36,18 @@ namespace EasySell.Controllers
             return RedirectToAction("Index", "OrderedGoods", new { OrderID = id });
         }
 
+        public async Task<ActionResult> Invoice(int? id)
+        {
+            List<Package> packages = await db.Packages.Where(d => d.OrderID == id).ToListAsync();
+            List<OrderedGood> orderedgoods = await db.OrderedGoods.Where(d => d.OrderID == id).ToListAsync();
+            Order orderInfo = await db.Orders.FindAsync(id);
+            ViewBag.Packages = packages;
+            ViewBag.OrderedGoods = orderedgoods;
+            ViewBag.OrderInfo = orderInfo;
+            ViewBag.OrderID = id;
+            ViewBag.SelectedGoodsFromStorage = await db.Storages.Where(d => d.OrderID == id).ToListAsync();
+            return View();
+        }
 
         public ActionResult Delivery(int? id)
         {
@@ -48,8 +60,8 @@ namespace EasySell.Controllers
             return RedirectToAction("Index", "Storages", new { OrderID = id });
         }
 
-        // GET: Orders/Details/5
-        public async Task<ActionResult> Details(int? id)
+        // GET: Orders/ProcessOrder/5
+        public async Task<ActionResult> ProcessOrder(int? id)
         {
             if (id == null)
             {
@@ -58,9 +70,12 @@ namespace EasySell.Controllers
             //Order order = await db.Orders.FindAsync(id);
             List<Package> packages = await db.Packages.Where(d => d.OrderID == id).ToListAsync();
             List<OrderedGood> orderedgoods = await db.OrderedGoods.Where(d => d.OrderID == id).ToListAsync();
+            Order orderInfo = await db.Orders.FindAsync(id);
             ViewBag.Packages = packages;
             ViewBag.OrderedGoods = orderedgoods;
+            ViewBag.OrderInfo = orderInfo;
             ViewBag.OrderID = id;
+            ViewBag.SelectedGoodsFromStorage = await db.Storages.Where(d => d.OrderID == id).ToListAsync();
             if (packages == null || orderedgoods == null)
             {
                 return HttpNotFound();

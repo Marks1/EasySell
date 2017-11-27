@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Project Detail <small> design</small></h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                        <ul class="stats-overview">
+                            <li>
+                                <span class="name"> Estimated budget </span>
+                                <span class="value text-success"> 2300 </span>
+                            </li>
+                            <li>
+                                <span class="name"> Total amount spent </span>
+                                <span class="value text-success"> 2000 </span>
+                            </li>
+                            <li class="hidden-phone">
+                                <span class="name"> Estimated project duration </span>
+                                <span class="value text-success"> 20 </span>
+                            </li>
+                        </ul>
+                        <br />
+                        <h2>Orders</h2>
+                        <p>
+                            @Html.ActionLink("Create New", "Create", new { OrderID = ViewBag.OrderID })
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            #
+                                        </th>
+                                        <th class="column-title">Name </th>
+                                        <th class="column-title">Price </th>
+                                        <th class="column-title">Amount </th>
+                                        <th class="column-title no-link last">
+                                            <span class="nobr">Action</span>
+                                        </th>
+                                        <th class="bulk-actions" colspan="7">
+                                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.OrderedGoods)
+                                    {
+                                        <tr class="even pointer">
+                                            <td class="a-center "></td>
+                                            <td class=" ">@item.GoodID</td>
+                                            <td class=" ">￥ @item.Price </td>
+                                            <td class=" ">@item.Quantity </td>
+                                            <td class=" last">
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end of user messages -->
+
+                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">配货</a>
+                                </li>
+                                <li role="presentation" class="">
+                                    <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">包裹信</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                    <p>
+                                        @Html.ActionLink("Create New", "Assign", "Storage", new { OrderID = ViewBag.OrderID }, null)
+                                    </p>
+                                    <!-- start recent activity -->
+                                    <table class="data table table-striped no-margin">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Cost</th>
+                                                <th class="hidden-phone">Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var item in ViewBag.SelectedGoodsFromStorage)
+                                        {
+                                            <tr>
+                                                <td>1</td>
+                                                <td>@item.GoodID</td>
+                                                <td>@item.Cost</td>
+                                                <td class="hidden-phone">18</td>
+                                                <td class="vertical-align-mid">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-success" data-transitiongoal="25"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                    <!-- end recent activity -->
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                    <!-- start user projects -->
+                                    <p>
+                                        @Html.ActionLink("Create New", "Create", "Packages", new { OrderID = ViewBag.OrderID }, null)
+                                    </p>
+                                    <table class="data table table-striped no-margin">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Provider</th>
+                                                <th>Serial Number</th>
+                                                <th class="hidden-phone">Cost</th>
+                                                <th>Price</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in ViewBag.Packages)
+                                            {
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>@item.ProviderID</td>
+                                                    <td>@item.SerialNumber</td>
+                                                    <td class="hidden-phone">@item.MoneySpend</td>
+                                                    <td class="hidden-phone">@item.MoneyReceived</td>
+                                                    <td class="vertical-align-mid">
+                                                        <a>status</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <!-- end user projects -->
+                                </div>
+
+                            </div>
+                            <!-- end of user messages -->
+
+                        </div>
+                    </div>
+                    <!-- start project-detail sidebar -->
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <section class="panel">
+                            <div class="x_title">
+                                <h2>Order Info</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="project_detail">
+                                    <p class="title">Client Name</p>
+                                    <p>@ViewBag.OrderInfo.customerID</p>
+                                    <p class="title">Create At</p>
+                                    <p>@ViewBag.OrderInfo.order_createtime</p>
+                                    <p class="title">Close At</p>
+                                    <p>@ViewBag.OrderInfo.order_closetime</p>
+                                </div>
+                                <br />
+                                <div class="text-center mtop20">
+                                    <a href="@Url.Action("Invoice", "Orders", new { id = ViewBag.OrderID })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- end project-detail sidebar -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

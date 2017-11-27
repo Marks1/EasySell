@@ -21,5 +21,6 @@ namespace EasySell.Models
         public string EMail { get; set; }
         public string LastName { get; set; }
         public int IsActive { get; set; }
+        public Nullable<System.DateTime> CreateAt { get; set; }
     }
 }

@@ -44,11 +44,11 @@
                             <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li>
-                                    <a  href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home"></i> Dashboard</a>
+                                    <a  href="@Url.Action("Dashboard", "Home")"><i class="fa fa-home"></i> Dashboard</a>
                                     
                                 </li>
                                 <li>
-                                    <a href="@Url.Action("Index", "Orders", new { status=0 })"><i class="fa fa-home"></i> Orders <span class="fa fa-chevron-down"></span></a>
+                                    <a href="#"><i class="fa fa-home"></i> Orders <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="@Url.Action("Index", "Orders", new { status = 1 })">Processing</a></li>
                                         <li><a href="@Url.Action("Index", "Orders", new { status = 2 })">Completed</a></li>
