@@ -22,5 +22,7 @@ namespace EasySell.Models
         public int Priority { get; set; }
         public int IsActive { get; set; }
         public int IsBillSent { get; set; }
+        public int IsPaid { get; set; }
+        public int IsShipped { get; set; }
     }
 }

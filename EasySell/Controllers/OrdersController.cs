@@ -18,23 +18,55 @@ namespace EasySell.Controllers
         // GET: Orders
         public async Task<ActionResult> Index(int? status)
         {
+            ViewBag.CompletedOrders = db.Orders.Count(d => d.IsActive == 0);
+            ViewBag.ProcessingOrders = db.Orders.Count(d => d.IsActive == 1);
+            ViewBag.WaitforShippingOrders = db.Orders.Count(d => d.IsShipped == 0);
+            ViewBag.UnpaiedOrders = db.Orders.Count(d => d.IsPaid == 0);
+
+            List<OrderViewModel> VMOrders = new List<OrderViewModel>();
+            List<Order> Orders = new List<Order>();
             switch (status)
             {
-                case 0: // all
-                    return View(await db.Orders.ToListAsync());
-                case 1: // opened only
-                    return View(await db.Orders.Where(d=>d.IsActive==1).ToListAsync());
-                case 2: // completed only
-                    return View(await db.Orders.Where(d => d.IsActive == 0).ToListAsync());
+                case 0: // inactive
+                    ViewBag.SubTitle = "Completed";
+                    Orders = await db.Orders.Where(d => d.IsActive == 0).ToListAsync();
+                    break;
+                case 1: // active
+                    ViewBag.SubTitle = "Processing";
+                    Orders = await db.Orders.Where(d => d.IsActive == 1).ToListAsync();
+                    break;
+                case 2: // wait for ship
+                    ViewBag.SubTitle = "Wait for Shipping";
+                    Orders = await db.Orders.Where(d => d.IsShipped == 0).ToListAsync();
+                    break;
+                case 3: // wait for payment
+                    ViewBag.SubTitle = "Unpaid";
+                    Orders = await db.Orders.Where(d => d.IsPaid == 0).ToListAsync();
+                    break;                    
+                case 9:
+                    ViewBag.SubTitle = "All";
+                    Orders = await db.Orders.ToListAsync();
+                    break;                    
                 default:
-                    return View(await db.Orders.ToListAsync());
-            }            
+                    ViewBag.SubTitle = "All";
+                    Orders = await db.Orders.ToListAsync();
+                    break;
+            }
+            foreach (Order order in Orders)
+            {
+                OrderViewModel orderviewdata = new OrderViewModel
+                {
+                    OrderInfo = order,
+                    CustomerName = db.Customers.Where(d => d.Id == order.customerID).FirstOrDefault().Name,
+                    OrderNumber = order.Id.ToString("00000"),
+                    OrderedGoodQty = db.OrderedGoods.Count(d => d.OrderID == order.Id),
+                    OrderTotalPrice = db.OrderedGoods.Where(d => d.OrderID == order.Id).Sum(d => d.Price)
+                };
+                VMOrders.Add(orderviewdata);
+            }
+            return View(VMOrders);
         }
 
-        public ActionResult PutOrder(int? id)
-        {
-            return RedirectToAction("Index", "OrderedGoods", new { OrderID = id });
-        }
 
         public async Task<ActionResult> Invoice(int? id)
         {
@@ -52,12 +84,6 @@ namespace EasySell.Controllers
         public ActionResult Delivery(int? id)
         {
             return RedirectToAction("Index", "Packages", new { OrderID = id });
-        }
-
-        public ActionResult MapOrder(int? id)
-        {
-            //TODO
-            return RedirectToAction("Index", "Storages", new { OrderID = id });
         }
 
         // GET: Orders/ProcessOrder/5

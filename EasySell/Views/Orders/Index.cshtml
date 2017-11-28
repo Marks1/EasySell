@@ -1,7 +1,6 @@
-﻿@model IEnumerable<EasySell.Models.Order>
+﻿@model IEnumerable<EasySell.Models.OrderViewModel>
 
 @{
-    ViewBag.Title = "Orders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,14 +8,13 @@
 <p>
     @Html.ActionLink("Create New Order", "Create");
 </p>
-<p>
-    @Html.ActionLink("All Order", "Index", new { status = 0 }, null);
-</p>
+
 
 <div class="">
+   
     <div class="page-title">
         <div class="title_left">
-            <h3>订单 <small>Active</small></h3>
+            <h3>订单 <small>@ViewBag.SubTitle</small></h3>
         </div>
         <div class="title_right">
             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -32,69 +30,81 @@
 
     <div class="clearfix"></div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10 col-sm-10 col-xs-12">
             <div class="x_panel">
-                <div class="x_content">
-                    <!-- start project list -->
+                <div class="x_content">                   
+
                     <table class="table table-striped projects">
-                        <thead>
-                            <tr>
-                                <th style="width: 1%">#</th>
-                                <th style="width: 20%">Customer Name</th>
-                                <th>Priority</th>
-                                <th>Progress</th>
-                                <th>Status</th>
-                                <th style="width: 40%">#Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                <td>
-                                    <a>@Html.DisplayFor(modelItem => item.customerID)</a>
-                                    <br />
-                                    @if (item.IsActive == 1)
-                                    { 
-                                    <small>Created @Html.DisplayFor(modelItem => item.order_createtime)</small>
-                                    }
-                                    else
-                                    {
-                                        <small>Closed @Html.DisplayFor(modelItem => item.order_closetime)</small>
-                                    }
-                                </td>
-                                
-                                <td>@Html.DisplayFor(modelItem => item.Priority)</td>
-                                <td class="project_progress">
-                                    <div class="progress progress_sm">
-                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="@(item.StatusID * 25)"></div>
-                                    </div>
-                                    <small>@(item.StatusID * 25)% Complete</small>
-                                </td>
-                                <td>
-                                    @if (item.IsActive == 1)
-                                    {
-                                        <button type="button" class="btn btn-success btn-xs">Processing</button>
-                                    }
-                                    else
-                                    {
-                                        <button type="button" class="btn btn-default btn-xs">Complete</button>
-                                    }                                    
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) 
-                                    <a href="@Url.Action("ProcessOrder", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 处理订单 </a>                                
-                                    <a href="@Url.Action("Invoice", "Orders", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
-                                </td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
-                    <!-- end project list -->
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 1%">Priority</th>
+                                            <th style="width: 15%">Customer</th>
+                                            <th style="width: 15%">Order #</th>
+                                            <th style="width: 15%">Payment Status</th>
+                                            <th style="width: 15%">Shipping Status</th>
+                                            <th style="width: 15%">Amount</th>
+                                            <th style="width: 20%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {                                            
+                                            <tr>
+                                                <td>@Html.DisplayFor(modelItem => item.OrderInfo.Priority)</td>
+                                                <td>
+                                                    <a href="#">@Html.DisplayFor(modelItem => item.CustomerName)</a>
+                                                    
+                                                </td>
+                                                <td>
+                                                    <a href="@Url.Action("ProcessOrder", "Orders", new { id = item.OrderInfo.Id })"> @Html.DisplayFor(modelItem => item.OrderNumber) </a>
+                                                    <br />
+                                                    <small>@Html.DisplayFor(modelItem => item.OrderInfo.order_createtime)</small>
+                                                </td>
+                                                <td>
+                                                    @if (item.OrderInfo.IsPaid == 1)
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-xs">Paid</button>
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @if (item.OrderInfo.IsShipped == 1)
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-xs">Shipped</button>
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    <a>￥ @Html.DisplayFor(modelItem => item.OrderTotalPrice)</a>
+                                                    <br />
+                                                    <small>Qty: @Html.DisplayFor(modelItem => item.OrderedGoodQty)</small>
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Edit", "Edit", new { id = item.OrderInfo.Id }) |
+                                                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderInfo.Id })
+                                                    <a href="@Url.Action("Invoice", "Orders", new { id = item.OrderInfo.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!-- end project list -->
                 </div>
             </div>
         </div>
+        <div class="col-md-2 col-sm-2 col-xs-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <a href="@Url.Action("Index", "Orders", new { status = 1 })" class="btn btn-primary btn-xs"> Processing</a> (@ViewBag.ProcessingOrders)
+                    <br />
+                    <a href="@Url.Action("Index", "Orders", new { status = 0 })" class="btn btn-primary btn-xs"> Completed</a> (@ViewBag.CompletedOrders)
+                    <br />
+                    <a href="@Url.Action("Index", "Orders", new { status = 2 })" class="btn btn-primary btn-xs"> Waiting for Shipping</a> (@ViewBag.WaitforShippingOrders) 
+                    <br />
+                    <a href="@Url.Action("Index", "Orders", new { status = 3 })" class="btn btn-primary btn-xs"> Unpaied</a> (@ViewBag.UnpaiedOrders)
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
     </div>
 </div>

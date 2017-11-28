@@ -10,7 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="500" />
           <Property Name="Phone" Type="nchar" MaxLength="20" />
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
@@ -39,6 +39,8 @@
           <Property Name="Priority" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="IsBillSent" Type="int" Nullable="false" />
+          <Property Name="IsPaid" Type="int" Nullable="false" />
+          <Property Name="IsShipped" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderedGood">
           <Key>
@@ -126,11 +128,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="CreateAt" Type="DateTime" Precision="3" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GoodInfo">
           <Key>
@@ -153,6 +155,8 @@
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="IsBillSent" Type="Int32" Nullable="false" />
+          <Property Name="IsPaid" Type="Int32" Nullable="false" />
+          <Property Name="IsShipped" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="OrderedGood">
           <Key>
@@ -216,11 +220,11 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="easysellModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -240,6 +244,8 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="easysellModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="IsShipped" ColumnName="IsShipped" />
+                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="IsBillSent" ColumnName="IsBillSent" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
