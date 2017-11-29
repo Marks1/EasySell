@@ -209,6 +209,7 @@
     <Compile Include="Controllers\PackageProvidersController.cs" />
     <Compile Include="Controllers\PackagesController.cs" />
     <Compile Include="Controllers\StoragesController.cs" />
+    <Compile Include="Controllers\TopMenuController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Models\ViewModels.cs" />
     <Compile Include="Global.asax.cs">
@@ -436,6 +437,8 @@
     <Content Include="Views\Storages\Index.cshtml" />
     <Content Include="Views\Orders\Invoice.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Shared\_TopMenu.cshtml" />
+    <Content Include="Views\TopMenu\Header2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
