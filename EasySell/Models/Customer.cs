@@ -18,9 +18,9 @@ namespace EasySell.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public string EMail { get; set; }
-        public string LastName { get; set; }
         public int IsActive { get; set; }
         public Nullable<System.DateTime> CreateAt { get; set; }
         public string Name { get; set; }
+        public string Picture { get; set; }
     }
 }

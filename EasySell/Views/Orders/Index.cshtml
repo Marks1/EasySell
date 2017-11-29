@@ -39,11 +39,11 @@
                                         <tr>
                                             <th style="width: 1%">Priority</th>
                                             <th style="width: 15%">Customer</th>
-                                            <th style="width: 15%">Order #</th>
-                                            <th style="width: 15%">Payment Status</th>
-                                            <th style="width: 15%">Shipping Status</th>
-                                            <th style="width: 15%">Amount</th>
-                                            <th style="width: 20%">Action</th>
+                                            <th style="width: 20%">Order #</th>
+                                            <th style="width: 10%">Payment</th>
+                                            <th style="width: 10%">Shipping</th>
+                                            <th style="width: 10%">Amount</th>
+                                            <th style="width: 30%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -52,11 +52,11 @@
                                             <tr>
                                                 <td>@Html.DisplayFor(modelItem => item.OrderInfo.Priority)</td>
                                                 <td>
-                                                    <a href="#">@Html.DisplayFor(modelItem => item.CustomerName)</a>
+                                                    <a href="@Url.Action("Details", "Customers", new { id = item.OrderInfo.customerID })">@Html.DisplayFor(modelItem => item.CustomerName)</a>
                                                     
                                                 </td>
                                                 <td>
-                                                    <a href="@Url.Action("ProcessOrder", "Orders", new { id = item.OrderInfo.Id })"> @Html.DisplayFor(modelItem => item.OrderNumber) </a>
+                                                    <a href="@Url.Action("ProcessOrder", "Orders", new { id = item.OrderInfo.Id })">#@item.OrderNumber</a>
                                                     <br />
                                                     <small>@Html.DisplayFor(modelItem => item.OrderInfo.order_createtime)</small>
                                                 </td>
@@ -72,7 +72,6 @@
                                                     {
                                                         <button type="button" class="btn btn-success btn-xs">Shipped</button>
                                                     }
-
                                                 </td>
                                                 <td>
                                                     <a>￥ @Html.DisplayFor(modelItem => item.OrderTotalPrice)</a>
@@ -81,7 +80,7 @@
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink("Edit", "Edit", new { id = item.OrderInfo.Id }) |
-                                                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderInfo.Id })
+                                                    @Html.ActionLink("Delete", "Delete", new { id = item.OrderInfo.Id }) | 
                                                     <a href="@Url.Action("Invoice", "Orders", new { id = item.OrderInfo.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 发票 </a>
                                                 </td>
                                             </tr>

@@ -18,23 +18,37 @@ namespace EasySell.Controllers
         // GET: GoodInfoes
         public async Task<ActionResult> Index()
         {
-            return View(await db.GoodInfoes.ToListAsync());
+            //return View(await db.GoodInfoes.ToListAsync());
+            List<GoodInfoViewModel> VMGoodInfo = new List<GoodInfoViewModel>();
+            var AllGoods = await db.GoodInfoes.ToListAsync();                      
+
+            foreach (GoodInfo good in AllGoods)
+            {
+                double averagecost = 0;
+                var storage = db.Storages.Where(d => d.GoodID == good.Id);
+                if (storage.Any())
+                {
+                    averagecost = storage.Average(d => d.Cost);
+                }
+                double averageprice = 0;
+                int totalsold = 0;
+                var goodordered = db.OrderedGoods.Where(d => d.GoodID == good.Id);
+                if (goodordered.Any())
+                {
+                    averageprice = goodordered.Average(d => d.Price);
+                    totalsold = goodordered.Sum(d => d.Quantity);
+                }
+                GoodInfoViewModel vm = new GoodInfoViewModel {
+                    GoodInfo = good,
+                    AverageCost = averagecost.ToString("F"),
+                    AveragePrice = averageprice.ToString("F"),
+                    TotalSold = totalsold
+                };
+                VMGoodInfo.Add(vm);
+            }
+            return View(VMGoodInfo);
         }
 
-        // GET: GoodInfoes/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            GoodInfo goodInfo = await db.GoodInfoes.FindAsync(id);
-            if (goodInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(goodInfo);
-        }
 
         // GET: GoodInfoes/Create
         public ActionResult Create()
@@ -89,33 +103,7 @@ namespace EasySell.Controllers
             }
             return View(goodInfo);
         }
-
-        // GET: GoodInfoes/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            GoodInfo goodInfo = await db.GoodInfoes.FindAsync(id);
-            if (goodInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(goodInfo);
-        }
-
-        // POST: GoodInfoes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
-        {
-            GoodInfo goodInfo = await db.GoodInfoes.FindAsync(id);
-            db.GoodInfoes.Remove(goodInfo);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

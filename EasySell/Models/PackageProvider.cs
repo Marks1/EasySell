@@ -16,5 +16,6 @@ namespace EasySell.Models
     {
         public int Id { get; set; }
         public string ProviderName { get; set; }
+        public int IsActive { get; set; }
     }
 }

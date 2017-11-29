@@ -14,4 +14,25 @@ namespace EasySell.Models
         public double OrderTotalPrice { get; set; }
         public int OrderedGoodQty { get; set; }
     }
+
+    public class CustomerViewModel
+    {
+        public Customer CustomerInfo { get; set; }
+        public int Rating { get; set; }        
+    }
+
+
+    public class CustomerDetailsViewModel
+    {
+        public Customer CustomerInfo { get; set; }
+        public List<OrderViewModel> OrdersOfCustomer { get; set; }
+    }
+
+    public class GoodInfoViewModel
+    {
+        public GoodInfo GoodInfo { get; set; }
+        public string AverageCost { get; set; }
+        public string AveragePrice { get; set; }
+        public int TotalSold { get; set; }
+    }
 }

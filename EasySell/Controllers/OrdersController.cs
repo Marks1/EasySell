@@ -54,13 +54,23 @@ namespace EasySell.Controllers
             }
             foreach (Order order in Orders)
             {
+                var orderedgoods = db.OrderedGoods.Where(d => d.OrderID == order.Id);
+                double totalprice = 0;
+                if(orderedgoods.Any())
+                {
+                    totalprice = orderedgoods.Sum(d => d.Price);
+                }
+                else
+                {
+                    totalprice = 0;
+                }
                 OrderViewModel orderviewdata = new OrderViewModel
                 {
                     OrderInfo = order,
                     CustomerName = db.Customers.Where(d => d.Id == order.customerID).FirstOrDefault().Name,
                     OrderNumber = order.Id.ToString("00000"),
                     OrderedGoodQty = db.OrderedGoods.Count(d => d.OrderID == order.Id),
-                    OrderTotalPrice = db.OrderedGoods.Where(d => d.OrderID == order.Id).Sum(d => d.Price)
+                    OrderTotalPrice = totalprice
                 };
                 VMOrders.Add(orderviewdata);
             }

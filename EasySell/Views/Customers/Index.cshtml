@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EasySell.Models.Customer>
+﻿@model IEnumerable<EasySell.Models.CustomerViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -37,34 +37,47 @@
                             <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
                                 <div class="well profile_view">
                                     <div class="col-sm-12">
-                                        <h4 class="brief"><i>Digital Strategist</i></h4>
+                                        @if (item.CustomerInfo.IsActive == 1)
+                                        {
+                                            <h4 class="brief"><i>Active</i></h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 class="brief"><i>Inactive</i></h4>
+                                        }
                                         <div class="left col-xs-7">
-                                            <h2>aa</h2>
-                                            <p><strong>About: </strong> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                                            <h2>@item.CustomerInfo.Name</h2>
+                                            <p><strong>Created: @item.CustomerInfo.CreateAt</strong>  </p>
                                             <ul class="list-unstyled">
-                                                <li><i class="fa fa-building"></i> Address: @Html.DisplayNameFor(model => model.Address)</li>
-                                                <li><i class="fa fa-phone"></i> Phone #: @Html.DisplayFor(modelItem => item.Phone)</li>
+                                                <li><i class="fa fa-building"></i> Address: @item.CustomerInfo.Address</li>
+                                                <li><i class="fa fa-phone"></i> Phone #: @item.CustomerInfo.Phone</li>
                                             </ul>
                                         </div>
                                         <div class="right col-xs-5 text-center">
-                                            <img src="images/img.jpg" alt="" class="img-circle img-responsive">
+                                            <img src="~/Static/image/user/@item.CustomerInfo.Picture" alt="" class="img-circle img-responsive">
                                         </div>
                                     </div>
                                     <div class="col-xs-12 bottom text-center">
                                         <div class="col-xs-12 col-sm-6 emphasis">
                                             <p class="ratings">
-                                                <a>4.0</a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star"></span></a>
-                                                <a href="#"><span class="fa fa-star-o"></span></a>
+                                                <a>@item.Rating</a>
+                                                @for (var i = 0; i < 5; i++)
+                                                {
+                                                    if (i < item.Rating)
+                                                    {
+                                                        <a href="#"><span class="fa fa-star"></span></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="#"><span class="fa fa-star-o"></span></a>
+                                                    }
+                                                }                                                
                                             </p>
                                         </div>
                                         <div class="col-xs-12 col-sm-6 emphasis">
-                                            <a href="@Url.Action("Edit", "Customers", new { id = item.Id })" class="btn btn-success btn-xs"><i class="fa fa-user"></i> Edit </a>
+                                            <a href="@Url.Action("Edit", "Customers", new { id = item.CustomerInfo.Id })" class="btn btn-success btn-xs"><i class="fa fa-user"></i> Edit </a>
                                                 
-                                            <a href="@Url.Action("Details", "Customers", new { id = item.Id })" class="btn btn-primary btn-xs"><i class="fa fa-user"></i> View Profile </a>
+                                            <a href="@Url.Action("Details", "Customers", new { id = item.CustomerInfo.Id })" class="btn btn-primary btn-xs"><i class="fa fa-user"></i> View Profile </a>
                                             
                                         </div>
                                     </div>

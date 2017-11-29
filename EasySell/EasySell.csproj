@@ -287,10 +287,10 @@
     </Content>
     <Content Include="Static\image\american-express.png" />
     <Content Include="Static\image\img.jpg" />
-    <Content Include="Static\image\Lin.png" />
+    <Content Include="Static\image\user\Lin.png" />
     <Content Include="Static\image\mastercard.png" />
     <Content Include="Static\image\paypal.png" />
-    <Content Include="Static\image\user.png" />
+    <Content Include="Static\image\user\user.png" />
     <Content Include="Static\image\visa.png" />
     <Content Include="Static\js\mainframe.js" />
     <Content Include="Static\vendors\css\bootstrap-progressbar-3.3.4.css" />
@@ -393,13 +393,10 @@
     <None Include="Properties\PublishProfiles\EasySell - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\smartsell - Web Deploy.pubxml" />
     <Content Include="Views\Customers\Create.cshtml" />
-    <Content Include="Views\Customers\Delete.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Customers\Edit.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\GoodInfoes\Create.cshtml" />
-    <Content Include="Views\GoodInfoes\Delete.cshtml" />
-    <Content Include="Views\GoodInfoes\Details.cshtml" />
     <Content Include="Views\GoodInfoes\Edit.cshtml" />
     <Content Include="Views\GoodInfoes\Index.cshtml" />
     <Content Include="Views\OrderStatus\Create.cshtml" />
