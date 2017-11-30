@@ -23,7 +23,6 @@ namespace EasySell.Models
         public int UnshippedOrdersNum { set; get; }
         public int UnpaidOrdersNum { set; get; }
         public List<OrderViewModel> OrdersList { set; get; }
-        public List<SelectListItem> AllCuseroms { set; get; }
     }
 
     public class NewOrderViewModel

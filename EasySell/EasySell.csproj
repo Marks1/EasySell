@@ -308,6 +308,10 @@
     <Content Include="Static\vendors\css\jqvmap.css" />
     <Content Include="Static\vendors\css\jqvmap.min.css" />
     <Content Include="Static\vendors\css\nprogress.css" />
+    <Content Include="Static\vendors\css\select2.css" />
+    <Content Include="Static\vendors\css\select2.min.css" />
+    <Content Include="Static\vendors\css\switchery.css" />
+    <Content Include="Static\vendors\css\switchery.min.css" />
     <Content Include="Static\vendors\fonts\fontawesome-webfont.svg" />
     <Content Include="Static\vendors\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Static\vendors\js\bootstrap-progressbar.js" />
@@ -340,7 +344,11 @@
     <Content Include="Static\vendors\js\moment.js" />
     <Content Include="Static\vendors\js\moment.min.js" />
     <Content Include="Static\vendors\js\nprogress.js" />
+    <Content Include="Static\vendors\js\select2.js" />
+    <Content Include="Static\vendors\js\select2.min.js" />
     <Content Include="Static\vendors\js\skycons.js" />
+    <Content Include="Static\vendors\js\switchery.js" />
+    <Content Include="Static\vendors\js\switchery.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -378,6 +386,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\TopMenu\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -438,7 +447,6 @@
     <Content Include="Views\Orders\Invoice.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_TopMenu.cshtml" />
-    <Content Include="Views\TopMenu\Header2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

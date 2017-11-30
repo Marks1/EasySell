@@ -97,7 +97,7 @@
                     <a href="@Url.Action("Index", "Orders", new { status = 1 })" class="btn btn-round btn-success btn-xs"> Processing</a> (@Model.ActiveOrdersNum)
                     <br />
                     <a href="@Url.Action("Index", "Orders", new { status = 0 })" class="btn btn-round btn-success btn-xs"> Completed</a> (@Model.InactiveOrdersNum)
-                    <br />
+                    <div class="ln_solid"></div>
                     <a href="@Url.Action("Index", "Orders", new { status = 2 })" class="btn btn-round btn-success btn-xs"> Waiting for Shipping</a> (@Model.UnshippedOrdersNum) 
                     <br />
                     <a href="@Url.Action("Index", "Orders", new { status = 3 })" class="btn btn-round btn-success btn-xs"> Unpaied</a> (@Model.UnpaidOrdersNum)
