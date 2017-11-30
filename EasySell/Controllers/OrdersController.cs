@@ -18,11 +18,6 @@ namespace EasySell.Controllers
         // GET: Orders
         public async Task<ActionResult> Index(int? status)
         {
-            ViewBag.CompletedOrders = db.Orders.Count(d => d.IsActive == 0);
-            ViewBag.ProcessingOrders = db.Orders.Count(d => d.IsActive == 1);
-            ViewBag.WaitforShippingOrders = db.Orders.Count(d => d.IsShipped == 0);
-            ViewBag.UnpaiedOrders = db.Orders.Count(d => d.IsPaid == 0);
-
             List<OrderViewModel> VMOrders = new List<OrderViewModel>();
             List<Order> Orders = new List<Order>();
             switch (status)
@@ -52,6 +47,7 @@ namespace EasySell.Controllers
                     Orders = await db.Orders.ToListAsync();
                     break;
             }
+            
             foreach (Order order in Orders)
             {
                 var orderedgoods = db.OrderedGoods.Where(d => d.OrderID == order.Id);
@@ -74,7 +70,16 @@ namespace EasySell.Controllers
                 };
                 VMOrders.Add(orderviewdata);
             }
-            return View(VMOrders);
+
+            OrdersViewModel ordersview = new OrdersViewModel
+            {
+                ActiveOrdersNum = db.Orders.Count(d => d.IsActive == 0),
+                InactiveOrdersNum = db.Orders.Count(d => d.IsActive == 1),
+                UnshippedOrdersNum = db.Orders.Count(d => d.IsShipped == 0),
+                UnpaidOrdersNum = db.Orders.Count(d => d.IsPaid == 0),                
+                OrdersList = VMOrders
+            };
+            return View(ordersview);
         }
 
 
@@ -122,7 +127,16 @@ namespace EasySell.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            return View();
+            List<SelectListItem> customers = new List<SelectListItem>();
+            foreach (Customer customer in db.Customers.Where(d => d.IsActive == 1))
+            {
+                customers.Add(new SelectListItem { Text = customer.Name, Value = customer.Id.ToString() });
+            }
+            NewOrderViewModel neworder = new NewOrderViewModel
+            {
+                AllCuseroms = customers
+            };
+            return View(neworder);
         }
 
         // POST: Orders/Create
@@ -130,11 +144,17 @@ namespace EasySell.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,customerID,StatusID,order_createtime,order_closetime")] Order order)
+        public async Task<ActionResult> Create([Bind(Include = "SelectedCustomerID,PriorityHigh")] NewOrderViewModel order)
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
+                Order neworder = new Order
+                {
+                    customerID = order.SelectedCustomerID,
+                    Priority = order.PriorityHigh ? 1 : 0,
+                    order_createtime = DateTime.Now,
+                };
+                db.Orders.Add(neworder);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

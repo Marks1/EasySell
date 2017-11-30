@@ -38,9 +38,9 @@
           <Property Name="order_closetime" Type="datetime" />
           <Property Name="Priority" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
-          <Property Name="IsBillSent" Type="int" Nullable="false" />
-          <Property Name="IsPaid" Type="int" Nullable="false" />
-          <Property Name="IsShipped" Type="int" Nullable="false" />
+          <Property Name="IsBillSent" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="IsPaid" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="IsShipped" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="OrderedGood">
           <Key>
@@ -156,9 +156,9 @@
           <Property Name="order_closetime" Type="DateTime" Precision="3" />
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="IsBillSent" Type="Int32" Nullable="false" />
-          <Property Name="IsPaid" Type="Int32" Nullable="false" />
-          <Property Name="IsShipped" Type="Int32" Nullable="false" />
+          <Property Name="IsBillSent" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IsPaid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IsShipped" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="OrderedGood">
           <Key>
