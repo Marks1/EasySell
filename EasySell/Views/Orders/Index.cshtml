@@ -37,8 +37,9 @@
                     <table class="table table-striped projects">
                                     <thead>
                                         <tr>
-                                            <th style="width: 1%">Priority</th>
-                                            <th style="width: 15%">Customer</th>
+                                            <th style="width: 1%">#</th>
+                                            <th style="width: 5%"></th>
+                                            <th style="width: 15%">Customer</th>                                            
                                             <th style="width: 20%">Order #</th>
                                             <th style="width: 10%">Payment</th>
                                             <th style="width: 10%">Shipping</th>
@@ -50,10 +51,14 @@
                                         @foreach (var item in Model.OrdersList)
                                         {                                            
                                             <tr>
-                                                <td>@Html.DisplayFor(modelItem => item.OrderInfo.Priority)</td>
+                                                <td></td>
                                                 <td>
-                                                    <a href="@Url.Action("Details", "Customers", new { id = item.OrderInfo.customerID })">@Html.DisplayFor(modelItem => item.CustomerName)</a>
-                                                    
+                                                    <img src="~/Static/image/user/@Html.DisplayFor(model => item.CustomerPic)" class="avatar" alt="Avatar">
+                                                </td>
+                                                <td> 
+                                                    <a href="@Url.Action("Details", "Customers", new { id = item.OrderInfo.customerID })">@Html.DisplayFor(modelItem => item.CustomerName)</a>                                                                                                     
+                                                    <br />
+                                                    <small>Priority: @Html.DisplayFor(modelItem => item.OrderInfo.Priority)</small>
                                                 </td>
                                                 <td>
                                                     <a href="@Url.Action("ProcessOrder", "Orders", new { id = item.OrderInfo.Id })">#@item.OrderNumber</a>

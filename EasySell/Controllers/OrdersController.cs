@@ -54,16 +54,18 @@ namespace EasySell.Controllers
                 double totalprice = 0;
                 if(orderedgoods.Any())
                 {
-                    totalprice = orderedgoods.Sum(d => d.Price);
+                    totalprice = orderedgoods.Sum(d => d.TotalPrice) ?? 0;
                 }
                 else
                 {
                     totalprice = 0;
                 }
+                Customer cus = db.Customers.Find(order.customerID);
                 OrderViewModel orderviewdata = new OrderViewModel
                 {
-                    OrderInfo = order,
-                    CustomerName = db.Customers.Where(d => d.Id == order.customerID).FirstOrDefault().Name,
+                    OrderInfo = order,                    
+                    CustomerName = cus.Name,
+                    CustomerPic = cus.Picture,
                     OrderNumber = order.Id.ToString("00000"),
                     OrderedGoodQty = db.OrderedGoods.Count(d => d.OrderID == order.Id),
                     OrderTotalPrice = totalprice
@@ -104,24 +106,81 @@ namespace EasySell.Controllers
         // GET: Orders/ProcessOrder/5
         public async Task<ActionResult> ProcessOrder(int? id)
         {
+            /*
+             *    public class ProcessOrderViewModel
+                    {
+                        public double TotalCost { set; get; }
+                        public double Revenue { set; get; }
+                        public int Duration { set; get; }
+                        public OrderViewModel OrderInfo { set; get; }
+                        public List<StorageGoodViewModel> AvaiavleGoodsInStorage { set; get; }
+                        public List<Package> Packages { set; get; }
+                        public List<OrderedGoodViewModel> OrderedGoods { set; get; } 
+                        public List<StorageGoodViewModel> AssignedGoodInStorage { set; get; }
+             */
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Order order = await db.Orders.FindAsync(id);
+            double TotalCost = 0;
+            List<int> orderedgoodsIDs = new List<int>();
             List<Package> packages = await db.Packages.Where(d => d.OrderID == id).ToListAsync();
             List<OrderedGood> orderedgoods = await db.OrderedGoods.Where(d => d.OrderID == id).ToListAsync();
-            Order orderInfo = await db.Orders.FindAsync(id);
-            ViewBag.Packages = packages;
-            ViewBag.OrderedGoods = orderedgoods;
-            ViewBag.OrderInfo = orderInfo;
-            ViewBag.OrderID = id;
-            ViewBag.SelectedGoodsFromStorage = await db.Storages.Where(d => d.OrderID == id).ToListAsync();
-            if (packages == null || orderedgoods == null)
+            List<OrderedGoodViewModel> OrderedGoods = new List<OrderedGoodViewModel>();
+            foreach (OrderedGood good in orderedgoods)
             {
-                return HttpNotFound();
+                OrderedGoods.Add(new OrderedGoodViewModel
+                {
+                    OrderedGoodInfo = good,
+                    GoodName = db.GoodInfoes.Find(good.GoodID).Name
+                });
+                orderedgoodsIDs.Add(good.GoodID);
             }
-            return View();
+            List<StorageGoodViewModel> AvaiavleGoodsInStorage = new List<StorageGoodViewModel>();
+            foreach (Storage storagegood in db.Storages.Where(d=>d.OrderID == null && orderedgoodsIDs.Contains(d.GoodID)))
+            {
+                AvaiavleGoodsInStorage.Add(new StorageGoodViewModel
+                {
+                    StorageGoodInfo = storagegood,
+                    GoodName = db.GoodInfoes.Find(storagegood.GoodID).Name
+                });
+            }
+
+            List<StorageGoodViewModel> AssignedGoodInStorage = new List<StorageGoodViewModel>();
+            foreach (Storage storagegood in db.Storages.Where(d => d.OrderID == id))
+            {
+                AssignedGoodInStorage.Add(new StorageGoodViewModel
+                {
+                    StorageGoodInfo = storagegood,
+                    GoodName = db.GoodInfoes.Find(storagegood.GoodID).Name
+                });
+                TotalCost += storagegood.TotalCost ?? 0;
+            }
+            Order orderInfo = await db.Orders.FindAsync(id);
+            Customer cus = db.Customers.Find(orderInfo.customerID);
+            OrderViewModel orderviewdata = new OrderViewModel
+            {
+                OrderInfo = orderInfo,
+                CustomerName = cus.Name,
+                CustomerPic = cus.Picture,
+                OrderNumber = orderInfo.Id.ToString("00000"),
+                OrderedGoodQty = 0,
+                OrderTotalPrice = Convert.ToDouble(0)
+            };
+            ProcessOrderViewModel processOrderview = new ProcessOrderViewModel
+            {
+                TotalCost = TotalCost,
+                Revenue = Convert.ToDouble(0),
+                Duration = 1,
+                OrderInfoView = orderviewdata,
+                AvaiavleGoodsInStorage = AvaiavleGoodsInStorage,
+                Packages = packages,
+                OrderedGoods = OrderedGoods,
+                AssignedGoodInStorage = AssignedGoodInStorage
+            };
+
+            return View(processOrderview);
         }
 
         // GET: Orders/Create

@@ -1,6 +1,6 @@
-﻿
+﻿@model EasySell.Models.DashboardViewModel
+
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,32 +9,62 @@
     <div class="row tile_count">
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> 本周订单</span>
-            <div class="count">@ViewBag.OrdersOfThisWeek</div>
-            <span class="count_bottom"><i class="green">@ViewBag.OrderIncrease % </i> From last Week</span>
+            <div class="count">@Model.OrdersOfThisWeek</div>
+            @{
+                string color = "green";
+                string increase = Model.OrderIncrease.ToString("F");
+                string arrow = "asc";
+                if (Model.OrderIncrease < 0)
+                {
+                    increase = Math.Abs(@Model.OrderIncrease).ToString("F");
+                    color = "red";
+                    arrow = "desc";
+                }
+            }
+            <span class="count_bottom"><i class="@color"><i class="fa fa-sort-@arrow"></i>@Model.OrderIncrease % </i> From last Week</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-clock-o"></i> 本周销售额</span>
-            <div class="count">@ViewBag.SalesOfThisWeek</div>
-            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewBag.SalesIncrease % </i> From last Week</span>
+            <div class="count">@Model.SalesOfThisWeek</div>
+            @{
+                increase = Model.SalesIncrease.ToString("F");
+                if (Model.SalesIncrease < 0)
+                {
+                    increase = Math.Abs(@Model.SalesIncrease).ToString("F");
+                    color = "red";
+                    arrow = "desc";
+                }
+            }
+            <span class="count_bottom"><i class="@color"><i class="fa fa-sort-@arrow"></i>@Model.SalesIncrease % </i> From last Week</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> 本周成本</span>
-            <div class="count">@ViewBag.CostOfThisWeek</div>
-            <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewBag.CostIncrease % </i> From last Week</span>
+            <div class="count">@Model.CostOfThisWeek</div>
+            @{
+                color = "green";
+                increase = Model.CostIncrease.ToString("F");
+                if (Model.CostIncrease < 0)
+                {
+                    increase = Math.Abs(@Model.CostIncrease).ToString("F");
+                    color = "red";
+                    arrow = "desc";
+                }
+            }
+            <span class="count_bottom"><i class="@color"><i class="fa fa-sort-@arrow"></i>@Model.CostIncrease % </i> From last Week</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> 总销售额</span>
-            <div class="count ">@ViewBag.TotalSales</div>
+            <div class="count ">@Model.TotalSales</div>            
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i> </i> </span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> 总成本</span>
-            <div class="count">@ViewBag.TotalCost</div>
+            <div class="count">@Model.TotalCost</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i> </i> </span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> 利润</span>
-            <div class="count green">@ViewBag.TotalRevenue</div>
+            <div class="count blue">@Model.TotalRevenue</div>
             <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i> </i> </span>
         </div>
     </div>
@@ -88,66 +118,21 @@
                                 <div class="clearfix"></div>
                             </div>
                             <ul class="list-unstyled top_profiles scroll-view">
+                            @foreach (var item in Model.TopCustomers)
+                            {
                                 <li class="media event">
                                     <a class="pull-left border-aero profile_thumb">
                                         <i class="fa fa-user aero"></i>
                                     </a>
                                     <div class="media-body">
-                                        <a class="title" href="#">张三</a>
-                                        <p><strong>$2300 </strong> (汇率: 5.2) </p>
+                                        <a class="title" href="#">@item.CustomerName</a>
+                                        <p><strong>￥@item.TotalOrderedAmount </strong> (汇率: 5.2) </p>
                                         <p>
-                                            <small>12 Sales This Month</small>
+                                            <small>@item.TotalOrders Total Orders </small>
                                         </p>
                                     </div>
                                 </li>
-                                <li class="media event">
-                                    <a class="pull-left border-green profile_thumb">
-                                        <i class="fa fa-user green"></i>
-                                    </a>
-                                    <div class="media-body">
-                                        <a class="title" href="#">Ms. Mary Jane</a>
-                                        <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                        <p>
-                                            <small>12 Sales Today</small>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="media event">
-                                    <a class="pull-left border-blue profile_thumb">
-                                        <i class="fa fa-user blue"></i>
-                                    </a>
-                                    <div class="media-body">
-                                        <a class="title" href="#">Ms. Mary Jane</a>
-                                        <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                        <p>
-                                            <small>12 Sales Today</small>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="media event">
-                                    <a class="pull-left border-aero profile_thumb">
-                                        <i class="fa fa-user aero"></i>
-                                    </a>
-                                    <div class="media-body">
-                                        <a class="title" href="#">Ms. Mary Jane</a>
-                                        <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                        <p>
-                                            <small>12 Sales Today</small>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="media event">
-                                    <a class="pull-left border-green profile_thumb">
-                                        <i class="fa fa-user green"></i>
-                                    </a>
-                                    <div class="media-body">
-                                        <a class="title" href="#">Ms. Mary Jane</a>
-                                        <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                        <p>
-                                            <small>12 Sales Today</small>
-                                        </p>
-                                    </div>
-                                </li>
+                            }
                             </ul>
                         </div>
                     </div>
@@ -166,55 +151,23 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <article class="media event">
-                        <a class="pull-left date">
-                            <p class="day">1</p>
-                        </a>
-                        <div class="media-body">
-                            <a class="title" href="#">木瓜高</a>
-                            <p>34</p>
-                        </div>
-                    </article>
-                    <article class="media event">
-                        <a class="pull-left date">
-                            <p class="month">April</p>
-                            <p class="day">23</p>
-                        </a>
-                        <div class="media-body">
-                            <a class="title" href="#">Item Two Title</a>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </article>
-                    <article class="media event">
-                        <a class="pull-left date">
-                            <p class="month">April</p>
-                            <p class="day">23</p>
-                        </a>
-                        <div class="media-body">
-                            <a class="title" href="#">Item Two Title</a>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </article>
-                    <article class="media event">
-                        <a class="pull-left date">
-                            <p class="month">April</p>
-                            <p class="day">23</p>
-                        </a>
-                        <div class="media-body">
-                            <a class="title" href="#">Item Two Title</a>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </article>
-                    <article class="media event">
-                        <a class="pull-left date">
-                            <p class="month">April</p>
-                            <p class="day">23</p>
-                        </a>
-                        <div class="media-body">
-                            <a class="title" href="#">Item Three Title</a>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        </div>
-                    </article>
+                    @{
+                            int i = 1;
+                            foreach (var item in Model.TopGoodsByCount)
+                            {
+                                <article class="media event">
+                                    <a class="pull-left date">
+                                        <p class="day">@i</p>
+                                    </a>
+                                    <div class="media-body">
+                                        <a class="title" href="#">@item.GoodName</a>
+                                        <p>@item.SoldCount</p>
+                                    </div>
+                                </article>
+                                i++;
+                            }
+                    }
+                    
                 </div>
             </div>
         </div>
