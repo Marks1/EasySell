@@ -38,10 +38,20 @@ namespace EasySell.Controllers
         }
 
         // GET: OrderedGoods/Create
-        public ActionResult Create(int? OrderID)
+        public ActionResult Create(int OrderID)
         {
-            ViewBag.OrderID = OrderID;
-            return View();
+            List<SelectListItem> goods = new List<SelectListItem>();
+            foreach (GoodInfo good in db.GoodInfoes)
+            {
+                goods.Add(new SelectListItem { Text = good.Name, Value = good.Id.ToString() });
+            }
+            NewOrderedGoodViewModel neworderedgood = new NewOrderedGoodViewModel
+            {
+                OrderID = OrderID,
+                CustomerID = db.Orders.Find(OrderID).customerID,
+                AllGoods = goods,
+            };
+            return View(neworderedgood);
         }
 
         // POST: OrderedGoods/Create
@@ -49,16 +59,25 @@ namespace EasySell.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,GoodID,OrderID,Quantity,SellPrice")] OrderedGood orderedGood)
+        public async Task<ActionResult> Create([Bind(Include = "SelectedGoodID,OrderID,Quantity,Price,CustomerID")] NewOrderedGoodViewModel neworderedGood)
         {
             if (ModelState.IsValid)
             {
+                OrderedGood orderedGood = new OrderedGood
+                {
+                    CustomerID = neworderedGood.CustomerID,
+                    GoodID = neworderedGood.SelectedGoodID,
+                    Quantity = neworderedGood.Quantity,
+                    OrderID = neworderedGood.OrderID,
+                    Price = neworderedGood.Price,
+                    TotalPrice = neworderedGood.Price * neworderedGood.Quantity
+                };
                 db.OrderedGoods.Add(orderedGood);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index", new { OrderID = orderedGood.OrderID});
+                
             }
 
-            return View(orderedGood);
+            return RedirectToAction("ProcessOrder", "Orders", new { id = neworderedGood.OrderID });
         }
 
         // GET: OrderedGoods/Edit/5

@@ -126,4 +126,14 @@ namespace EasySell.Models
         public List<Package> Packages { set; get; }
         public List<OrderedGoodViewModel> OrderedGoods { set; get; }
     }
+
+    public class NewOrderedGoodViewModel
+    {
+        public int Quantity { set; get; }
+        public int OrderID { set; get; }
+        public double Price { set; get; }
+        public int CustomerID { set; get; }
+        public List<SelectListItem> AllGoods { set; get; }
+        public int SelectedGoodID { set; get; }
+    }
 }
