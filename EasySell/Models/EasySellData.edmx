@@ -46,8 +46,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="GoodID" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GoodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
@@ -79,6 +79,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProviderName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="QueryURL" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Storage">
           <Key>
@@ -200,6 +201,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProviderName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="QueryURL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Storage">
           <Key>
@@ -303,6 +305,7 @@
           <EntitySetMapping Name="PackageProviders">
             <EntityTypeMapping TypeName="easysellModel.PackageProvider">
               <MappingFragment StoreEntitySet="PackageProvider">
+                <ScalarProperty Name="QueryURL" ColumnName="QueryURL" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

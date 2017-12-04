@@ -137,15 +137,7 @@ namespace EasySell.Controllers
                 });
                 orderedgoodsIDs.Add(good.GoodID);
             }
-            List<StorageGoodViewModel> AvaiavleGoodsInStorage = new List<StorageGoodViewModel>();
-            foreach (Storage storagegood in db.Storages.Where(d=>d.OrderID == null && orderedgoodsIDs.Contains(d.GoodID)))
-            {
-                AvaiavleGoodsInStorage.Add(new StorageGoodViewModel
-                {
-                    StorageGoodInfo = storagegood,
-                    GoodName = db.GoodInfoes.Find(storagegood.GoodID).Name
-                });
-            }
+            
 
             List<StorageGoodViewModel> AssignedGoodInStorage = new List<StorageGoodViewModel>();
             foreach (Storage storagegood in db.Storages.Where(d => d.OrderID == id))
@@ -157,7 +149,24 @@ namespace EasySell.Controllers
                 });
                 TotalCost += storagegood.TotalCost ?? 0;
             }
-            Order orderInfo = await db.Orders.FindAsync(id);
+            OrderViewModel orderviewdata = await GetOrderViewModelData(id);
+            ProcessOrderViewModel processOrderview = new ProcessOrderViewModel
+            {
+                TotalCost = TotalCost,
+                Revenue = Convert.ToDouble(0),
+                Duration = 1,
+                OrderInfoView = orderviewdata,
+                Packages = packages,
+                OrderedGoods = OrderedGoods,
+                AssignedGoodInStorage = AssignedGoodInStorage
+            };
+
+            return View(processOrderview);
+        }
+
+        private async Task<OrderViewModel> GetOrderViewModelData(int? OrderID)
+        {
+            Order orderInfo = await db.Orders.FindAsync(OrderID);
             Customer cus = db.Customers.Find(orderInfo.customerID);
             OrderViewModel orderviewdata = new OrderViewModel
             {
@@ -168,19 +177,7 @@ namespace EasySell.Controllers
                 OrderedGoodQty = 0,
                 OrderTotalPrice = Convert.ToDouble(0)
             };
-            ProcessOrderViewModel processOrderview = new ProcessOrderViewModel
-            {
-                TotalCost = TotalCost,
-                Revenue = Convert.ToDouble(0),
-                Duration = 1,
-                OrderInfoView = orderviewdata,
-                AvaiavleGoodsInStorage = AvaiavleGoodsInStorage,
-                Packages = packages,
-                OrderedGoods = OrderedGoods,
-                AssignedGoodInStorage = AssignedGoodInStorage
-            };
-
-            return View(processOrderview);
+            return orderviewdata;
         }
 
         // GET: Orders/Create
@@ -234,6 +231,35 @@ namespace EasySell.Controllers
                 return HttpNotFound();
             }
             return View(order);
+        }
+
+
+
+        // GET: Storages/avaiable/5&3
+        public async Task<ActionResult> MatchGoods(int? id)
+        {
+            OrderedGood orderedGood = await db.OrderedGoods.FindAsync(id);
+            OrderedGoodViewModel orderedgood = new OrderedGoodViewModel
+            {
+                OrderedGoodInfo = orderedGood,
+                GoodName = db.GoodInfoes.Find(orderedGood.GoodID).Name
+            };
+            List<StorageGoodViewModel> AvaiavleGoodsInStorage = new List<StorageGoodViewModel>();
+            foreach (Storage storagegood in db.Storages.Where(d => d.OrderID == null && d.GoodID == orderedGood.GoodID))
+            {
+                AvaiavleGoodsInStorage.Add(new StorageGoodViewModel
+                {
+                    StorageGoodInfo = storagegood,
+                    GoodName = db.GoodInfoes.Find(storagegood.GoodID).Name
+                });
+            }
+            MatchGoodViewModel MatchGoodinStorage = new MatchGoodViewModel
+            {
+                OrderedGood = orderedgood,
+                //OrderInfoView = await GetOrderViewModelData(OrderID),
+                AvailableGoodsInStorage = AvaiavleGoodsInStorage
+            };
+            return View(MatchGoodinStorage);
         }
 
         // POST: Orders/Edit/5

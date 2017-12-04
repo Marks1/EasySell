@@ -122,7 +122,6 @@ namespace EasySell.Models
         public int Duration { set; get; }
         public OrderViewModel OrderInfoView { set; get; }
         public List<StorageGoodViewModel> AssignedGoodInStorage { set; get; }
-        public List<StorageGoodViewModel> AvaiavleGoodsInStorage { set; get; }
         public List<Package> Packages { set; get; }
         public List<OrderedGoodViewModel> OrderedGoods { set; get; }
     }
@@ -135,5 +134,22 @@ namespace EasySell.Models
         public int CustomerID { set; get; }
         public List<SelectListItem> AllGoods { set; get; }
         public int SelectedGoodID { set; get; }
+    }
+
+    public class NewStorageGoodViewModel
+    {
+        public int Quantity { set; get; }
+        public double Cost { set; get; }
+        public List<SelectListItem> AllGoods { set; get; }
+        public int SelectedGoodID { set; get; }
+    }
+
+    public class MatchGoodViewModel
+    {
+        public OrderedGoodViewModel OrderedGood { set; get; }
+        //public OrderViewModel OrderInfoView { set; get; }
+        public List<StorageGoodViewModel> AvailableGoodsInStorage { set; get; }
+        public int SelectedStorageID { set; get; }
+        public int SelectedOrderedGoodID { set; get; }
     }
 }

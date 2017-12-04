@@ -447,6 +447,7 @@
     <Content Include="Views\Orders\Invoice.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_TopMenu.cshtml" />
+    <Content Include="Views\Orders\MatchGoods.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

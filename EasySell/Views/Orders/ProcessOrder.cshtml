@@ -31,61 +31,56 @@
                             <span class="value text-success"> @Model.Duration 天 </span>
                         </li>
                     </ul>
-                    <br/>
-                    <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 添加商品 </a>
+                    <br />
+                    <div class="btn-group-xs">
+                        <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> 添加商品 </a>
+                        <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 登记发货 </a>
+                        <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 关闭订单 </a>
 
-                    <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 显示库存 </a>
-
-                    <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 登记发货 </a>
-                    <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 关闭订单 </a>
+                    </div>
 
                 </div>
             </div>
         </div>
         <div class="clearfix"></div>
-        
+
         <div class="row">
             <div class="x_panel">
                 <div class="x_content">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr class="headings">
-                                    <th>
-                                        #
-                                    </th>
-                                    <th style="width: 40%" class="column-title">Name </th>
-                                    <th class="column-title">Price </th>
-                                    <th class="column-title">Amount </th>
-                                    <th style="width: 30%" class="column-title no-link last">
-                                        <span class="nobr">Action</span>
-                                    </th>
-                                    <th class="bulk-actions" colspan="7">
-                                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                    </th>
+                    <table class="table">
+                        <thead>
+                            <tr class="headings">
+                                <th>
+                                    #
+                                </th>
+                                <th style="width: 40%" class="column-title">Name </th>
+                                <th class="column-title">Price </th>
+                                <th class="column-title">Amount </th>
+                                <th style="width: 30%" class="column-title no-link last">
+                                    <span class="nobr">Action</span>
+                                </th>
+                                <th class="bulk-actions" colspan="7">
+                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderedGoods)
+                            {
+                                <tr class="even pointer">
+                                    <td class="a-center "></td>
+                                    <td class=" ">@item.GoodName</td>
+                                    <td class=" ">￥ @item.OrderedGoodInfo.Price </td>
+                                    <td class=" ">@item.OrderedGoodInfo.Quantity </td>
+                                    <td class=" last">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.OrderedGoodInfo.Id }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.OrderedGoodInfo.Id }) |
+                                        <a href="@Url.Action("MatchGoods", "Orders", new { id = item.OrderedGoodInfo.Id })" class="btn btn-primary btn-xs"> Select </a>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.OrderedGoods)
-                                {
-                                    <tr class="even pointer">
-                                        <td class="a-center "></td>
-                                        <td class=" ">@item.GoodName</td>
-                                        <td class=" ">￥ @item.OrderedGoodInfo.Price </td>
-                                        <td class=" ">@item.OrderedGoodInfo.Quantity </td>
-                                        <td class=" last">
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.OrderedGoodInfo.Id }) |
-                                            @Html.ActionLink("Details", "Details", new { id = item.OrderedGoodInfo.Id }) |
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.OrderedGoodInfo.Id }) |
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- end of user messages -->
-
-
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -126,7 +121,9 @@
                                                 <td>@item.StorageGoodInfo.Cost</td>
                                                 <td class="hidden-phone">@item.StorageGoodInfo.Quantity</td>
                                                 <td class="vertical-align-mid">
-                                                    <a href="@Url.Action("Assign", "Storage", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary btn-xs"> Select </a>
+
+                                                    <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> 显示库存 </a>
+
                                                 </td>
                                             </tr>
                                         }
@@ -134,7 +131,7 @@
                                 </table>
                                 <!-- end recent activity -->
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">                               
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                                 <table class="data table table-striped no-margin">
                                     <thead>
                                         <tr>
@@ -174,6 +171,10 @@
             </div>
         </div>
     </div>
+
+
+
+
 
 
 
