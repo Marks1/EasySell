@@ -128,6 +128,7 @@ namespace EasySell.Controllers
             List<Package> packages = await db.Packages.Where(d => d.OrderID == id).ToListAsync();
             List<OrderedGood> orderedgoods = await db.OrderedGoods.Where(d => d.OrderID == id).ToListAsync();
             List<OrderedGoodViewModel> OrderedGoods = new List<OrderedGoodViewModel>();
+            List<PackageViewModel> Packages = new List<PackageViewModel>();
             foreach (OrderedGood good in orderedgoods)
             {
                 OrderedGoods.Add(new OrderedGoodViewModel
@@ -137,7 +138,14 @@ namespace EasySell.Controllers
                 });
                 orderedgoodsIDs.Add(good.GoodID);
             }
-            
+            foreach(Package pkg in packages)
+            {
+                Packages.Add(new PackageViewModel
+                {
+                    PackageInfo = pkg,
+                    DeliverName = db.PackageProviders.Find(pkg.ProviderID).ProviderName,
+                });
+            }
 
             List<StorageGoodViewModel> AssignedGoodInStorage = new List<StorageGoodViewModel>();
             foreach (Storage storagegood in db.Storages.Where(d => d.OrderID == id))
@@ -156,7 +164,7 @@ namespace EasySell.Controllers
                 Revenue = Convert.ToDouble(0),
                 Duration = 1,
                 OrderInfoView = orderviewdata,
-                Packages = packages,
+                Packages = Packages,
                 OrderedGoods = OrderedGoods,
                 AssignedGoodInStorage = AssignedGoodInStorage
             };

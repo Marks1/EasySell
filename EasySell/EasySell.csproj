@@ -338,6 +338,7 @@
     <Content Include="Static\vendors\js\jquery.flot.time.js" />
     <Content Include="Static\vendors\js\jquery.js" />
     <Content Include="Static\vendors\js\jquery.min.js" />
+    <Content Include="Static\vendors\js\jquery.smartWizard.js" />
     <Content Include="Static\vendors\js\jquery.vmap.js" />
     <Content Include="Static\vendors\js\jquery.vmap.sampledata.js" />
     <Content Include="Static\vendors\js\jquery.vmap.world.js" />
@@ -448,6 +449,7 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_TopMenu.cshtml" />
     <Content Include="Views\Orders\MatchGoods.cshtml" />
+    <Content Include="Views\Orders\ProcessOrder - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

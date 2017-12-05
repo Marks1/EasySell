@@ -38,10 +38,21 @@ namespace EasySell.Controllers
         }
 
         // GET: Packages/Create
-        public ActionResult Create(int? OrderID)
+        public async Task<ActionResult> Create(int? OrderID)
         {
+            if (OrderID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             ViewBag.OrderID = OrderID;
-            return View();
+            List<PackageProvider> delivers = await db.PackageProviders.Where(d => d.IsActive == 1).ToListAsync();
+            NewPackageViewModel packageproviderVM = new NewPackageViewModel
+            {
+                AllPackageDelivers = delivers,
+                SerialNumber = "",
+                OrderID = OrderID ?? 0,
+            };
+            return View(packageproviderVM);
         }
 
         // POST: Packages/Create
@@ -49,16 +60,22 @@ namespace EasySell.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,SerialNumber,ProviderID,MoneySpend,MoneyReceived,OrderID")] Package package)
+        public async Task<ActionResult> Create([Bind(Include = "SelectedDeliverID,SerialNumber,MoneySpend,MoneyReceived,OrderID")] NewPackageViewModel package)
         {
             if (ModelState.IsValid)
             {
-                db.Packages.Add(package);
+                Package newPackage = new Package
+                {
+                    SerialNumber = package.SerialNumber,
+                    ProviderID = package.SelectedDeliverID,
+                    OrderID = package.OrderID
+                };
+
+                db.Packages.Add(newPackage);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index", new { OrderID= package.OrderID});
             }
 
-            return View(package);
+            return RedirectToAction("ProcessOrder", "Orders", new { id = package.OrderID });
         }
 
         // GET: Packages/Edit/5

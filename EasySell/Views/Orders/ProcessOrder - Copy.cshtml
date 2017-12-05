@@ -1,0 +1,206 @@
+﻿@model EasySell.Models.ProcessOrderViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>@Model.OrderInfoView.CustomerName <small> ID: @Model.OrderInfoView.OrderNumber</small></h3>
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-9 col-sm-9 col-xs-12">
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_content">
+                    <ul class="stats-overview">
+                        <li>
+                            <span class="name"> 成本 </span>
+                            <span class="value text-success"> ￥@Model.TotalCost </span>
+                        </li>
+                        <li>
+                            <span class="name"> 利润 </span>
+                            <span class="value text-success"> ￥@Model.Revenue </span>
+                        </li>
+                        <li>
+                            <span class="name"> 耗时 </span>
+                            <span class="value text-success"> @Model.Duration 天 </span>
+                        </li>
+                    </ul>
+                    <br />
+                    <div class="btn-group-xs">
+                        <a href="@Url.Action("Create", "OrderedGoods", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary "><i class="fa fa-plus"></i> 添加商品 </a>
+                        <a href="@Url.Action("Create", "Packages", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 登记发货 </a>
+                        <a href="@Url.Action("Close", "Orders", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary"><i class="fa fa-folder"></i> 关闭订单 </a>
+                        <a href="@Url.Action("Invoice", "Orders", new { id = ViewBag.OrderID })" class="btn btn-primary "><i class="fa fa-folder"></i> 发票 </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_content">
+                    <table class="table">
+                        <thead>
+                            <tr class="headings">
+                                <th>
+                                    #
+                                </th>
+                                <th style="width: 40%" class="column-title">Name </th>
+                                <th class="column-title">Price </th>
+                                <th class="column-title">Amount </th>
+                                <th style="width: 30%" class="column-title no-link last">
+                                    <span class="nobr">Action</span>
+                                </th>
+                                <th class="bulk-actions" colspan="7">
+                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderedGoods)
+                            {
+                                <tr class="even pointer">
+                                    <td class="a-center "></td>
+                                    <td class=" ">@item.GoodName</td>
+                                    <td class=" ">￥ @item.OrderedGoodInfo.Price </td>
+                                    <td class=" ">@item.OrderedGoodInfo.Quantity </td>
+                                    <td class=" last">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.OrderedGoodInfo.Id }) |
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.OrderedGoodInfo.Id }) |
+                                        <a href="@Url.Action("MatchGoods", "Orders", new { id = item.OrderedGoodInfo.Id })" class="btn btn-primary btn-xs"> Select </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">配货</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">包裹信</a>
+                            </li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">                               
+                                <table class="data table table-striped no-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>单价</th>
+                                            <th class="hidden-phone">Amount</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.AssignedGoodInStorage)
+                                        {
+                                            <tr>
+                                                <td>1</td>
+                                                <td>@item.GoodName</td>
+                                                <td>@item.StorageGoodInfo.Cost</td>
+                                                <td class="hidden-phone">@item.StorageGoodInfo.Quantity</td>
+                                                <td class="vertical-align-mid">
+
+                                                    <a href="@Url.Action("Delete", "Storages", new { id = item.StorageGoodInfo.Id })" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Delete </a>
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!-- end recent activity -->
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                <table class="data table table-striped no-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Provider</th>
+                                            <th>Serial Number</th>
+                                            <th class="hidden-phone">Cost</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Packages)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>@item.DeliverName</td>
+                                                <td>@item.PackageInfo.SerialNumber</td>
+                                                <td class="hidden-phone">@item.PackageInfo.MoneySpend</td>
+                                                <td class="hidden-phone">@item.PackageInfo.MoneyReceived</td>
+                                                <td class="vertical-align-mid">
+                                                    <a href="@Url.Action("Delete", "Packages", new { id = item.PackageInfo.OrderID })" class="btn btn-danger btn-xs"><i class="fa fa-folder"></i> Delete</a>
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <!-- end user projects -->
+                            </div>
+
+                        </div>
+                        <!-- end of user messages -->
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- start project-detail sidebar -->
+    <div class="col-md-3 col-sm-3 col-xs-12">
+
+        <section class="x_panel">
+            <div class="x_title">
+                <h2>Order Info</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="project_detail">
+                    <div class="text-center">
+                        
+                    </div>
+                    <p class="title">Client Name</p>
+                    <p>@Model.OrderInfoView.CustomerName</p>
+                    <p class="title">Create At</p>
+                    <p>@Model.OrderInfoView.OrderInfo.order_createtime</p>
+                    <p class="title">Close At</p>
+                    <p>@Model.OrderInfoView.OrderInfo.order_closetime</p>
+                    <p class="title">Paid?</p>
+                    <p>@Model.OrderInfoView.OrderInfo.IsPaid</p>
+                    <p class="title">Shipped?</p>
+                    <p>@Model.OrderInfoView.OrderInfo.IsShipped</p>
+                </div>                
+            </div>
+        </section>
+    </div>
+    <!-- end project-detail sidebar -->
+</div>
