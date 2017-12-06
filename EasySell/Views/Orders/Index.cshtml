@@ -53,10 +53,10 @@
                                             <tr>
                                                 <td><span class="label label-success">H</span></td>
                                                 <td>
-                                                    <img src="~/Static/image/user/@Html.DisplayFor(model => item.CustomerPic)" class="avatar" alt="Avatar">
+                                                    <img src="~/Static/image/user/@Html.DisplayFor(model => item.CustomerInfo.Picture)" class="avatar" alt="Avatar">
                                                 </td>
                                                 <td> 
-                                                    <a href="@Url.Action("Details", "Customers", new { id = item.OrderInfo.customerID })">@Html.DisplayFor(modelItem => item.CustomerName)</a>                                                                                                     
+                                                    <a href="@Url.Action("Details", "Customers", new { id = item.OrderInfo.customerID })">@Html.DisplayFor(modelItem => item.CustomerInfo.Name)</a>                                                                                                     
                                                     <br />
                                                     <small>Priority: @Html.DisplayFor(modelItem => item.OrderInfo.Priority)</small>
                                                 </td>

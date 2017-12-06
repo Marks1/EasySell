@@ -64,7 +64,7 @@ namespace EasySell.Controllers
                 OrderViewModel orderviewdata = new OrderViewModel
                 {
                     OrderInfo = order,
-                    CustomerName = customer.Name,
+                    CustomerInfo = customer,
                     OrderNumber = order.Id.ToString("00000"),
                     OrderedGoodQty = 0,
                     OrderTotalPrice = totalprice

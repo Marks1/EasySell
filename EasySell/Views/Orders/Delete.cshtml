@@ -1,4 +1,4 @@
-﻿@model EasySell.Models.Order
+﻿@model EasySell.Models.OrderViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -12,36 +12,21 @@
     <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.customerID)
-        </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.customerID)
+            @Html.DisplayFor(model => model.CustomerInfo.Name)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StatusID)
-        </dt>
-
+        
         <dd>
-            @Html.DisplayFor(model => model.StatusID)
+            @Html.DisplayFor(model => model.OrderedGoodQty)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.order_createtime)
-        </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.order_createtime)
+            @Html.DisplayFor(model => model.OrderInfo.Id)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.order_closetime)
-        </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.order_closetime)
+            @Html.DisplayFor(model => model.OrderNumber)
         </dd>
 
     </dl>

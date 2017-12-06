@@ -123,7 +123,13 @@ namespace EasySell.Controllers
             {
                 return HttpNotFound();
             }
-            return View(orderedGood);
+            OrderedGoodViewModel orderedgoodVM = new OrderedGoodViewModel
+            {
+                OrderedGoodInfo = orderedGood,
+                GoodName = db.GoodInfoes.Find(orderedGood.GoodID).Name
+            };
+            
+            return View(orderedgoodVM);
         }
 
         // POST: OrderedGoods/Delete/5
@@ -134,7 +140,7 @@ namespace EasySell.Controllers
             OrderedGood orderedGood = await db.OrderedGoods.FindAsync(id);
             db.OrderedGoods.Remove(orderedGood);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("ProcessOrder", "Orders", new { id = orderedGood.OrderID });
         }
 
         protected override void Dispose(bool disposing)

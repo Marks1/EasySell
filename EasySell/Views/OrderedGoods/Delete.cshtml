@@ -1,4 +1,4 @@
-﻿@model EasySell.Models.OrderedGood
+﻿@model EasySell.Models.OrderedGoodViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -12,37 +12,14 @@
     <h4>OrderedGood</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.GoodID)
-        </dt>
-
+       
         <dd>
-            @Html.DisplayFor(model => model.GoodID)
+            @Html.DisplayFor(model => model.GoodName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Quantity)
+            @Html.DisplayNameFor(model => model.OrderedGoodInfo.Quantity)
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SellPrice)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SellPrice)
-        </dd>
 
     </dl>
 

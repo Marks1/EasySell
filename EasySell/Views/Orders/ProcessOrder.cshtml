@@ -6,7 +6,7 @@
 <div class="">
     <div class="page-title">
         <div class="title_left">
-            <h3>@Model.OrderInfoView.CustomerName <small> ID: @Model.OrderInfoView.OrderNumber</small></h3>
+            <h3>@Model.OrderInfoView.CustomerInfo.Name <small> ID: @Model.OrderInfoView.OrderNumber</small></h3>
         </div>
 
     </div>
@@ -178,7 +178,7 @@
                             <h2 class="StepTitle">Summary</h2>
                             <div class="ln_solid"></div>
                             <a href="@Url.Action("Close", "Orders", new { OrderID = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary btn-lg"><i class="fa fa-folder"></i> 关闭订单 </a>
-                            <a href="@Url.Action("Invoice", "Orders", new { id = Model.OrderInfoView.OrderInfo.Id })" class="btn btn-primary "><i class="fa fa-folder"></i> 发票 </a>
+                            <a href="@Url.Action("Invoice", "Orders", new { id = Model.OrderInfoView.OrderInfo.Id })" class=" "><i class="fa fa-folder"></i> 发票 </a>
                             <div class="clearfix"></div>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                         
                     </div>
                     <p class="title">Client Name</p>
-                    <p>@Model.OrderInfoView.CustomerName</p>
+                    <p>@Model.OrderInfoView.CustomerInfo.Name</p>
                     <p class="title">Create At</p>
                     <p>@Model.OrderInfoView.OrderInfo.order_createtime</p>
                     <p class="title">Close At</p>

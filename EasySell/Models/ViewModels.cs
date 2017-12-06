@@ -10,8 +10,7 @@ namespace EasySell.Models
     public class OrderViewModel
     {
         public Order OrderInfo { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPic { get; set; }
+        public Customer CustomerInfo { get; set; }
         public string OrderNumber { get; set; }
         public double OrderTotalPrice { get; set; }
         public int OrderedGoodQty { get; set; }
@@ -168,4 +167,15 @@ namespace EasySell.Models
         public int OrderID { set; get; }
         public int SelectedDeliverID { set; get; }
     }
+
+    //Invoice
+    public class InvoiceViewModel
+    {
+        public OrderViewModel OrderVM { set; get; }
+        public List<OrderedGoodViewModel> OrderedGoods { set; get; }
+        public List<PackageViewModel> Packages { set; get; }
+        public double TotalPackagePrice { set; get; }
+        public double TotalPrice { set; get; }
+    }
+
 }

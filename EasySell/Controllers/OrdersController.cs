@@ -50,27 +50,8 @@ namespace EasySell.Controllers
             
             foreach (Order order in Orders)
             {
-                var orderedgoods = db.OrderedGoods.Where(d => d.OrderID == order.Id);
-                double totalprice = 0;
-                if(orderedgoods.Any())
-                {
-                    totalprice = orderedgoods.Sum(d => d.TotalPrice) ?? 0;
-                }
-                else
-                {
-                    totalprice = 0;
-                }
-                Customer cus = db.Customers.Find(order.customerID);
-                OrderViewModel orderviewdata = new OrderViewModel
-                {
-                    OrderInfo = order,                    
-                    CustomerName = cus.Name,
-                    CustomerPic = cus.Picture,
-                    OrderNumber = order.Id.ToString("00000"),
-                    OrderedGoodQty = db.OrderedGoods.Count(d => d.OrderID == order.Id),
-                    OrderTotalPrice = totalprice
-                };
-                VMOrders.Add(orderviewdata);
+                OrderViewModel orderVM = await GetOrderViewModelData(order);
+                VMOrders.Add(orderVM);
             }
 
             OrdersViewModel ordersview = new OrdersViewModel
@@ -84,18 +65,70 @@ namespace EasySell.Controllers
             return View(ordersview);
         }
 
+        private async Task<OrderViewModel> GetOrderViewModelData(Order order)
+        {
+            var orderedgoods = db.OrderedGoods.Where(d => d.OrderID == order.Id);
+            double totalprice = 0;
+            if (orderedgoods.Any())
+            {
+                totalprice = await orderedgoods.SumAsync(d => d.TotalPrice) ?? 0;
+            }
+            else
+            {
+                totalprice = 0;
+            }
+            Customer cus = await db.Customers.FindAsync(order.customerID);
+            OrderViewModel orderviewdata = new OrderViewModel
+            {
+                OrderInfo = order,
+                CustomerInfo = cus,                
+                OrderNumber = order.Id.ToString("00000"),
+                OrderedGoodQty = await db.OrderedGoods.CountAsync(d => d.OrderID == order.Id),
+                OrderTotalPrice = totalprice
+            };
+            return orderviewdata;
+        }
 
         public async Task<ActionResult> Invoice(int? id)
         {
-            List<Package> packages = await db.Packages.Where(d => d.OrderID == id).ToListAsync();
-            List<OrderedGood> orderedgoods = await db.OrderedGoods.Where(d => d.OrderID == id).ToListAsync();
-            Order orderInfo = await db.Orders.FindAsync(id);
-            ViewBag.Packages = packages;
-            ViewBag.OrderedGoods = orderedgoods;
-            ViewBag.OrderInfo = orderInfo;
-            ViewBag.OrderID = id;
-            ViewBag.SelectedGoodsFromStorage = await db.Storages.Where(d => d.OrderID == id).ToListAsync();
-            return View();
+            //Order Info
+            Order order = await db.Orders.FindAsync(id);
+            OrderViewModel OrderInfo = await GetOrderViewModelData(order);
+            //Packages
+            List<PackageViewModel> Packages = new List<PackageViewModel>();
+            double TotalPackagePrice = 0;
+            double Total = 0;
+            double TotalGoodPrice = 0;
+            foreach(Package pkg in db.Packages.Where(d => d.OrderID == id))
+            {
+                Packages.Add(new PackageViewModel
+                {
+                    PackageInfo = pkg,
+                    DeliverName = db.PackageProviders.Find(pkg.ProviderID).ProviderName
+                });
+                TotalPackagePrice += pkg.MoneySpend;
+            }
+            //Ordered Goods
+            List<OrderedGoodViewModel> OrderedGoods = new List<OrderedGoodViewModel>();
+            foreach(OrderedGood good in db.OrderedGoods.Where(d=>d.OrderID == id))
+            {
+                OrderedGoods.Add(new OrderedGoodViewModel
+                {
+                    OrderedGoodInfo = good,
+                    GoodName = db.GoodInfoes.Find(good.GoodID).Name
+                });
+                TotalGoodPrice += good.TotalPrice ?? 0;
+            }
+
+            InvoiceViewModel Invoice = new InvoiceViewModel
+            {
+                OrderedGoods = OrderedGoods,
+                OrderVM = OrderInfo,
+                Packages = Packages,
+                TotalPackagePrice = TotalPackagePrice,
+                TotalPrice = TotalGoodPrice + TotalPackagePrice
+            };
+            return View(Invoice);
         }
 
         public ActionResult Delivery(int? id)
@@ -157,7 +190,7 @@ namespace EasySell.Controllers
                 });
                 TotalCost += storagegood.TotalCost ?? 0;
             }
-            OrderViewModel orderviewdata = await GetOrderViewModelData(id);
+            OrderViewModel orderviewdata = await GetOrderViewModelData(db.Orders.Find(id));
             ProcessOrderViewModel processOrderview = new ProcessOrderViewModel
             {
                 TotalCost = TotalCost,
@@ -171,22 +204,7 @@ namespace EasySell.Controllers
 
             return View(processOrderview);
         }
-
-        private async Task<OrderViewModel> GetOrderViewModelData(int? OrderID)
-        {
-            Order orderInfo = await db.Orders.FindAsync(OrderID);
-            Customer cus = db.Customers.Find(orderInfo.customerID);
-            OrderViewModel orderviewdata = new OrderViewModel
-            {
-                OrderInfo = orderInfo,
-                CustomerName = cus.Name,
-                CustomerPic = cus.Picture,
-                OrderNumber = orderInfo.Id.ToString("00000"),
-                OrderedGoodQty = 0,
-                OrderTotalPrice = Convert.ToDouble(0)
-            };
-            return orderviewdata;
-        }
+        
 
         // GET: Orders/Create
         public ActionResult Create()
@@ -298,7 +316,8 @@ namespace EasySell.Controllers
             {
                 return HttpNotFound();
             }
-            return View(order);
+            OrderViewModel orderVM = await GetOrderViewModelData(order);
+            return View(orderVM);
         }
 
         // POST: Orders/Delete/5
@@ -306,6 +325,18 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
+            //Remove associated orderedgoods
+            db.OrderedGoods.RemoveRange(db.OrderedGoods.Where(d => d.OrderID == id));
+
+            //Remove associated packages
+            db.Packages.RemoveRange(db.Packages.Where(d => d.OrderID == id));
+
+            //Update storage to put back goods
+            foreach(Storage pkgtoreset in db.Storages.Where(d => d.OrderID == id))
+            {
+                pkgtoreset.OrderID = null;                
+            }
+            
             Order order = await db.Orders.FindAsync(id);
             db.Orders.Remove(order);
             await db.SaveChangesAsync();
