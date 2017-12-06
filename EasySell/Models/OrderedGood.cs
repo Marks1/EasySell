@@ -21,5 +21,6 @@ namespace EasySell.Models
         public double Price { get; set; }
         public Nullable<int> CustomerID { get; set; }
         public Nullable<double> TotalPrice { get; set; }
+        public Nullable<int> UserID { get; set; }
     }
 }

@@ -18,8 +18,10 @@ namespace EasySell.Controllers
         // GET: Storages
         public ActionResult Index()
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             List<StorageGoodViewModel> StorageList = new List<StorageGoodViewModel>();
-            foreach (Storage storage in db.Storages.Where(d => d.OrderID == null))
+            foreach (Storage storage in db.Storages.Where(d => d.OrderID == null && d.UserID == CurrentUserID))
             {
                 StorageGoodViewModel StorageVM = new StorageGoodViewModel
                 {
@@ -70,10 +72,12 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SelectedGoodID,Cost,Quantity")] NewStorageGoodViewModel newstorage)
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             int goodID = newstorage.SelectedGoodID;
             double cost = newstorage.Cost;
             int quantity = newstorage.Quantity;
-            Storage existingitem = await db.Storages.Where(d => d.GoodID == goodID && d.Cost == cost).FirstOrDefaultAsync();
+            Storage existingitem = await db.Storages.Where(d => d.GoodID == goodID && d.Cost == cost && d.UserID == CurrentUserID).FirstOrDefaultAsync();
             //update exising one
             if (existingitem != null)
             {
@@ -86,6 +90,7 @@ namespace EasySell.Controllers
                 //create new
                 Storage newitem = new Storage
                 {
+                    UserID = CurrentUserID,
                     GoodID = goodID,
                     Cost = cost,
                     Quantity = quantity,

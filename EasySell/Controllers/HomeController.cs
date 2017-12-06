@@ -37,12 +37,10 @@ namespace EasySell.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            User user = await db.Users.Where(d => d.Name == model.Email && d.Password == model.Password).FirstOrDefaultAsync();
+            User user = await db.Users.Where(d => d.EMail == model.Email && d.Password == model.Password).FirstOrDefaultAsync();
             if(user != null)
             {
-                //System.Web.HttpContext.Current.Session["CurrentUser"] = user;
-                //User test = (User)System.Web.HttpContext.Current.Session["CurrentUser"];
-                Session["CurrentUser"] = user;                
+                new SessionManager().CurrentUser = user;                     
                 return RedirectToAction("Dashboard");
             }
             else
@@ -56,9 +54,11 @@ namespace EasySell.Controllers
         {
             DateTime statofthisweek = DateTime.Now.AddDays(-7);
             DateTime startoflastweek = DateTime.Now.AddDays(-14);
+
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
             // orders             
-            List<int> _ordersofthisweek = await db.Orders.Where(d => d.order_createtime > statofthisweek).Select(s=>s.Id).ToListAsync();
-            List<int> _ordersoflastweek = await db.Orders.Where(d => d.order_createtime > startoflastweek && d.order_createtime < statofthisweek).Select(s => s.Id).ToListAsync();
+            List<int> _ordersofthisweek = await db.Orders.Where(d => d.order_createtime > statofthisweek && d.UserID == CurrentUserID).Select(s=>s.Id).ToListAsync();
+            List<int> _ordersoflastweek = await db.Orders.Where(d => d.order_createtime > startoflastweek && d.order_createtime < statofthisweek && d.UserID == CurrentUserID).Select(s => s.Id).ToListAsync();
 
             int thisweek_ordercount = _ordersofthisweek.Count;
             int lastweek_ordercount = _ordersoflastweek.Count;
@@ -77,7 +77,7 @@ namespace EasySell.Controllers
             double totalcost = db.Storages.Where(d => _allorders.Contains(d.OrderID.Value)).Sum(d => (double?)d.TotalCost) ?? Convert.ToDouble(0);
            
             // Top customers
-            var topcustomers = await db.OrderedGoods.GroupBy(g => g.CustomerID).Select(x => new
+            var topcustomers = await db.OrderedGoods.Where(d=>d.UserID == CurrentUserID).GroupBy(g => g.CustomerID).Select(x => new
             {
                 CustomerID = x.Key,
                 OrderCount = x.Count(),
@@ -98,7 +98,7 @@ namespace EasySell.Controllers
 
             //Top good sold count
             // Top customers
-            var topgoodsbycount = await db.OrderedGoods.GroupBy(g => g.GoodID).Select(x => new
+            var topgoodsbycount = await db.OrderedGoods.Where(d=>d.UserID==CurrentUserID).GroupBy(g => g.GoodID ).Select(x => new
             {
                 GoodID = x.Key,
                 TotalGoodsAmount = x.Sum(s => s.Quantity)

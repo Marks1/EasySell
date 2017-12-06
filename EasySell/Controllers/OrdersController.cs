@@ -18,33 +18,35 @@ namespace EasySell.Controllers
         // GET: Orders
         public async Task<ActionResult> Index(int? status)
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             List<OrderViewModel> VMOrders = new List<OrderViewModel>();
             List<Order> Orders = new List<Order>();
             switch (status)
             {
                 case 0: // inactive
                     ViewBag.SubTitle = "Completed";
-                    Orders = await db.Orders.Where(d => d.IsActive == 0).ToListAsync();
+                    Orders = await db.Orders.Where(d => d.IsActive == 0 && d.UserID == CurrentUserID).ToListAsync();
                     break;
                 case 1: // active
                     ViewBag.SubTitle = "Processing";
-                    Orders = await db.Orders.Where(d => d.IsActive == 1).ToListAsync();
+                    Orders = await db.Orders.Where(d => d.IsActive == 1 && d.UserID == CurrentUserID).ToListAsync();
                     break;
                 case 2: // wait for ship
                     ViewBag.SubTitle = "Wait for Shipping";
-                    Orders = await db.Orders.Where(d => d.IsShipped == 0).ToListAsync();
+                    Orders = await db.Orders.Where(d => d.IsShipped == 0 && d.UserID == CurrentUserID).ToListAsync();
                     break;
                 case 3: // wait for payment
                     ViewBag.SubTitle = "Unpaid";
-                    Orders = await db.Orders.Where(d => d.IsPaid == 0).ToListAsync();
+                    Orders = await db.Orders.Where(d => d.IsPaid == 0 && d.UserID == CurrentUserID).ToListAsync();
                     break;                    
                 case 9:
                     ViewBag.SubTitle = "All";
-                    Orders = await db.Orders.ToListAsync();
+                    Orders = await db.Orders.Where(d=>d.UserID == CurrentUserID).ToListAsync();
                     break;                    
                 default:
                     ViewBag.SubTitle = "All";
-                    Orders = await db.Orders.ToListAsync();
+                    Orders = await db.Orders.Where(d => d.UserID == CurrentUserID).ToListAsync();
                     break;
             }
             
@@ -56,10 +58,10 @@ namespace EasySell.Controllers
 
             OrdersViewModel ordersview = new OrdersViewModel
             {
-                ActiveOrdersNum = db.Orders.Count(d => d.IsActive == 0),
-                InactiveOrdersNum = db.Orders.Count(d => d.IsActive == 1),
-                UnshippedOrdersNum = db.Orders.Count(d => d.IsShipped == 0),
-                UnpaidOrdersNum = db.Orders.Count(d => d.IsPaid == 0),                
+                ActiveOrdersNum = db.Orders.Count(d => d.IsActive == 0 && d.UserID == CurrentUserID),
+                InactiveOrdersNum = db.Orders.Count(d => d.IsActive == 1 && d.UserID == CurrentUserID),
+                UnshippedOrdersNum = db.Orders.Count(d => d.IsShipped == 0 && d.UserID == CurrentUserID),
+                UnpaidOrdersNum = db.Orders.Count(d => d.IsPaid == 0 && d.UserID == CurrentUserID),                
                 OrdersList = VMOrders
             };
             return View(ordersview);
@@ -97,7 +99,6 @@ namespace EasySell.Controllers
             //Packages
             List<PackageViewModel> Packages = new List<PackageViewModel>();
             double TotalPackagePrice = 0;
-            double Total = 0;
             double TotalGoodPrice = 0;
             foreach(Package pkg in db.Packages.Where(d => d.OrderID == id))
             {
@@ -130,28 +131,11 @@ namespace EasySell.Controllers
             };
             return View(Invoice);
         }
-
-        public ActionResult Delivery(int? id)
-        {
-            return RedirectToAction("Index", "Packages", new { OrderID = id });
-        }
+        
 
         // GET: Orders/ProcessOrder/5
         public async Task<ActionResult> ProcessOrder(int? id)
-        {
-            /*
-             *    public class ProcessOrderViewModel
-                    {
-                        public double TotalCost { set; get; }
-                        public double Revenue { set; get; }
-                        public int Duration { set; get; }
-                        public OrderViewModel OrderInfo { set; get; }
-                        public List<StorageGoodViewModel> AvaiavleGoodsInStorage { set; get; }
-                        public List<Package> Packages { set; get; }
-                        public List<OrderedGoodViewModel> OrderedGoods { set; get; } 
-                        public List<StorageGoodViewModel> AssignedGoodInStorage { set; get; }
-             */
-
+        {           
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -230,8 +214,10 @@ namespace EasySell.Controllers
         {
             if (ModelState.IsValid)
             {
+                int CurrentUserID = new SessionManager().CurrentUser.Id;
                 Order neworder = new Order
                 {
+                    UserID = CurrentUserID,
                     customerID = order.SelectedCustomerID,
                     Priority = order.PriorityHigh ? 1 : 0,
                     order_createtime = DateTime.Now,
@@ -264,6 +250,8 @@ namespace EasySell.Controllers
         // GET: Storages/avaiable/5&3
         public async Task<ActionResult> MatchGoods(int? id)
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             OrderedGood orderedGood = await db.OrderedGoods.FindAsync(id);
             OrderedGoodViewModel orderedgood = new OrderedGoodViewModel
             {
@@ -271,7 +259,7 @@ namespace EasySell.Controllers
                 GoodName = db.GoodInfoes.Find(orderedGood.GoodID).Name
             };
             List<StorageGoodViewModel> AvaiavleGoodsInStorage = new List<StorageGoodViewModel>();
-            foreach (Storage storagegood in db.Storages.Where(d => d.OrderID == null && d.GoodID == orderedGood.GoodID))
+            foreach (Storage storagegood in db.Storages.Where(d => d.OrderID == null && d.GoodID == orderedGood.GoodID && d.UserID == CurrentUserID))
             {
                 AvaiavleGoodsInStorage.Add(new StorageGoodViewModel
                 {

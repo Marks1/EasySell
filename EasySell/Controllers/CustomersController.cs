@@ -19,8 +19,10 @@ namespace EasySell.Controllers
         // GET: Customers
         public async Task<ActionResult> Index()
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             List<CustomerViewModel> VMCustomers = new List<CustomerViewModel>();
-            List<Customer> Customers = await db.Customers.ToListAsync();
+            List<Customer> Customers = await db.Customers.Where(d=>d.UserID==CurrentUserID).ToListAsync();
             foreach (Customer customer in Customers)
             {
                 int ordercount = db.Orders.Count(d => d.customerID == customer.Id);
@@ -115,6 +117,8 @@ namespace EasySell.Controllers
             //db
             if (ModelState.IsValid)
             {
+                int CurrentUserID = new SessionManager().CurrentUser.Id;
+                customer.UserID = CurrentUserID;
                 customer.CreateAt = DateTime.Now;
                 customer.Picture = filename;
                 db.Customers.Add(customer);

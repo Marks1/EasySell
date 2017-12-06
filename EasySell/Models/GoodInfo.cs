@@ -18,5 +18,7 @@ namespace EasySell.Models
         public string Name { get; set; }
         public double Weight { get; set; }
         public string Brand { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> UserID { get; set; }
     }
 }

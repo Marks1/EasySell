@@ -40,8 +40,10 @@ namespace EasySell.Controllers
         // GET: OrderedGoods/Create
         public ActionResult Create(int OrderID)
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             List<SelectListItem> goods = new List<SelectListItem>();
-            foreach (GoodInfo good in db.GoodInfoes)
+            foreach (GoodInfo good in db.GoodInfoes.Where(d=>d.UserID==CurrentUserID))
             {
                 goods.Add(new SelectListItem { Text = good.Name, Value = good.Id.ToString() });
             }
@@ -61,10 +63,13 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SelectedGoodID,OrderID,Quantity,Price,CustomerID")] NewOrderedGoodViewModel neworderedGood)
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
+
             if (ModelState.IsValid)
             {
                 OrderedGood orderedGood = new OrderedGood
                 {
+                    UserID = CurrentUserID,
                     CustomerID = neworderedGood.CustomerID,
                     GoodID = neworderedGood.SelectedGoodID,
                     Quantity = neworderedGood.Quantity,

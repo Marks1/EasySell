@@ -20,5 +20,6 @@ namespace EasySell.Models
         public double MoneySpend { get; set; }
         public double MoneyReceived { get; set; }
         public int OrderID { get; set; }
+        public Nullable<int> UserID { get; set; }
     }
 }

@@ -22,5 +22,6 @@ namespace EasySell.Models
         public Nullable<System.DateTime> CreateAt { get; set; }
         public string Name { get; set; }
         public string Picture { get; set; }
+        public Nullable<int> UserID { get; set; }
     }
 }

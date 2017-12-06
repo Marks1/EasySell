@@ -64,11 +64,13 @@ namespace EasySell.Controllers
         {
             if (ModelState.IsValid)
             {
+                int CurrentUserID = new SessionManager().CurrentUser.Id;
                 Package newPackage = new Package
                 {
                     SerialNumber = package.SerialNumber,
                     ProviderID = package.SelectedDeliverID,
-                    OrderID = package.OrderID
+                    OrderID = package.OrderID,
+                    UserID = CurrentUserID
                 };
 
                 db.Packages.Add(newPackage);

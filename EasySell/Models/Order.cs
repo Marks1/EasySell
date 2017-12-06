@@ -24,5 +24,6 @@ namespace EasySell.Models
         public int IsBillSent { get; set; }
         public int IsPaid { get; set; }
         public int IsShipped { get; set; }
+        public Nullable<int> UserID { get; set; }
     }
 }

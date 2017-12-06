@@ -18,21 +18,22 @@ namespace EasySell.Controllers
         // GET: GoodInfoes
         public async Task<ActionResult> Index()
         {
+            int CurrentUserID = new SessionManager().CurrentUser.Id;
             //return View(await db.GoodInfoes.ToListAsync());
             List<GoodInfoViewModel> VMGoodInfo = new List<GoodInfoViewModel>();
-            var AllGoods = await db.GoodInfoes.ToListAsync();                      
+            var AllGoods = await db.GoodInfoes.Where(d=>d.UserID==CurrentUserID).ToListAsync();                      
 
             foreach (GoodInfo good in AllGoods)
             {
                 double averagecost = 0;
-                var storage = db.Storages.Where(d => d.GoodID == good.Id);
+                var storage = db.Storages.Where(d => d.GoodID == good.Id && d.UserID == CurrentUserID);
                 if (storage.Any())
                 {
                     averagecost = storage.Average(d => d.Cost);
                 }
                 double averageprice = 0;
                 int totalsold = 0;
-                var goodordered = db.OrderedGoods.Where(d => d.GoodID == good.Id);
+                var goodordered = db.OrderedGoods.Where(d => d.GoodID == good.Id && d.UserID == CurrentUserID);
                 if (goodordered.Any())
                 {
                     averageprice = goodordered.Average(d => d.Price);
@@ -65,6 +66,7 @@ namespace EasySell.Controllers
         {
             if (ModelState.IsValid)
             {
+                goodInfo.UserID = new SessionManager().CurrentUser.Id;
                 db.GoodInfoes.Add(goodInfo);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
