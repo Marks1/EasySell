@@ -15,7 +15,41 @@ namespace EasySell.Controllers
 
         public ActionResult Index()
         {
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("Login");
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(SystemLoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.LoginMsg = "Invalid login attempt.";
+                return View(model);
+            }
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            User user = await db.Users.Where(d => d.Name == model.Email && d.Password == model.Password).FirstOrDefaultAsync();
+            if(user != null)
+            {
+                //System.Web.HttpContext.Current.Session["CurrentUser"] = user;
+                //User test = (User)System.Web.HttpContext.Current.Session["CurrentUser"];
+                Session["CurrentUser"] = user;                
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                ViewBag.LoginMsg = "Invalid login attempt.";
+                return View(model);
+            }            
         }
 
         public async Task<ActionResult> Dashboard()

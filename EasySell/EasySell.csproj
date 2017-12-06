@@ -294,6 +294,7 @@
     <Content Include="Static\image\user\user.png" />
     <Content Include="Static\image\visa.png" />
     <Content Include="Static\js\mainframe.js" />
+    <Content Include="Static\vendors\css\animate.min.css" />
     <Content Include="Static\vendors\css\bootstrap-progressbar-3.3.4.css" />
     <Content Include="Static\vendors\css\bootstrap-progressbar-3.3.4.min.css" />
     <Content Include="Static\vendors\css\bootstrap.css" />
@@ -450,6 +451,7 @@
     <Content Include="Views\Shared\_TopMenu.cshtml" />
     <Content Include="Views\Orders\MatchGoods.cshtml" />
     <Content Include="Views\Orders\ProcessOrder - Copy.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

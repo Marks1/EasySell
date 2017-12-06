@@ -1,6 +1,7 @@
 ﻿using EasySell.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,6 +28,7 @@ namespace EasySell.Models
 
     public class NewOrderViewModel
     {
+        [Required]
         public int SelectedCustomerID { set; get; }
         public bool PriorityHigh { set; get; }
         public List<SelectListItem> AllCuseroms { set; get; }
@@ -128,10 +130,13 @@ namespace EasySell.Models
     public class NewOrderedGoodViewModel
     {
         public int Quantity { set; get; }
+        [Required]
         public int OrderID { set; get; }
         public double Price { set; get; }
+        [Required]
         public int CustomerID { set; get; }
         public List<SelectListItem> AllGoods { set; get; }
+        [Required]
         public int SelectedGoodID { set; get; }
     }
 
@@ -164,7 +169,9 @@ namespace EasySell.Models
     {
         public List<PackageProvider> AllPackageDelivers { set; get; }
         public string SerialNumber { set; get; }
+        [Required]
         public int OrderID { set; get; }
+        [Required]
         public int SelectedDeliverID { set; get; }
     }
 
@@ -178,4 +185,19 @@ namespace EasySell.Models
         public double TotalPrice { set; get; }
     }
 
+
+    //Login
+
+    public class SystemLoginViewModel
+    {
+        [Required]
+        [Display(Name = "Email")]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+    }
 }
