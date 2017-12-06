@@ -64,7 +64,12 @@ namespace EasySell.Controllers
         {
             if (ModelState.IsValid)
             {
-                int CurrentUserID = new SessionManager().CurrentUser.Id;
+                if (Session["CurrentUserID"] == null)
+                {
+                    RedirectToAction("Login", "Home");
+                }
+                int CurrentUserID = (int)Session["CurrentUserID"];
+
                 Package newPackage = new Package
                 {
                     SerialNumber = package.SerialNumber,

@@ -19,7 +19,11 @@ namespace EasySell.Controllers
         // GET: Customers
         public async Task<ActionResult> Index()
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
 
             List<CustomerViewModel> VMCustomers = new List<CustomerViewModel>();
             List<Customer> Customers = await db.Customers.Where(d=>d.UserID==CurrentUserID).ToListAsync();
@@ -96,6 +100,12 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Name,Address,Phone,EMail")] Customer customer, HttpPostedFileBase picture)
         {
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
+
             string filename = string.Format("{0}.png", Guid.NewGuid().ToString("N"));
             string targetFolder = Server.MapPath("~/Static/image/user");
             string targetPath = Path.Combine(targetFolder, filename);
@@ -116,8 +126,7 @@ namespace EasySell.Controllers
 
             //db
             if (ModelState.IsValid)
-            {
-                int CurrentUserID = new SessionManager().CurrentUser.Id;
+            {                
                 customer.UserID = CurrentUserID;
                 customer.CreateAt = DateTime.Now;
                 customer.Picture = filename;

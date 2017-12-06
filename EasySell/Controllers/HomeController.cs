@@ -40,7 +40,7 @@ namespace EasySell.Controllers
             User user = await db.Users.Where(d => d.EMail == model.Email && d.Password == model.Password).FirstOrDefaultAsync();
             if(user != null)
             {
-                new SessionManager().CurrentUser = user;                     
+                Session["CurrentUserID"] = user.Id;
                 return RedirectToAction("Dashboard");
             }
             else
@@ -55,10 +55,25 @@ namespace EasySell.Controllers
             DateTime statofthisweek = DateTime.Now.AddDays(-7);
             DateTime startoflastweek = DateTime.Now.AddDays(-14);
 
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
-            // orders             
-            List<int> _ordersofthisweek = await db.Orders.Where(d => d.order_createtime > statofthisweek && d.UserID == CurrentUserID).Select(s=>s.Id).ToListAsync();
-            List<int> _ordersoflastweek = await db.Orders.Where(d => d.order_createtime > startoflastweek && d.order_createtime < statofthisweek && d.UserID == CurrentUserID).Select(s => s.Id).ToListAsync();
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
+
+            // orders   
+            List<int> _ordersofthisweek = new List<int>();
+            List<int> _ordersoflastweek = new List<int>();
+            var _ordersofthisweekdataset = db.Orders.Where(d => d.order_createtime > statofthisweek && d.UserID == CurrentUserID);
+            var _orderoflastweekdataset = db.Orders.Where(d => d.order_createtime > startoflastweek && d.order_createtime < statofthisweek && d.UserID == CurrentUserID);
+            if (_ordersofthisweekdataset.Any())
+            {
+                _ordersofthisweek = await _ordersofthisweekdataset.Select(s => s.Id).ToListAsync();
+            }
+            if (_orderoflastweekdataset.Any())
+            {
+                _ordersoflastweek = await _orderoflastweekdataset.Select(s => s.Id).ToListAsync();
+            }
 
             int thisweek_ordercount = _ordersofthisweek.Count;
             int lastweek_ordercount = _ordersoflastweek.Count;

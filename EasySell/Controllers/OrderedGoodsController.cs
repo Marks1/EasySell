@@ -40,7 +40,11 @@ namespace EasySell.Controllers
         // GET: OrderedGoods/Create
         public ActionResult Create(int OrderID)
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
 
             List<SelectListItem> goods = new List<SelectListItem>();
             foreach (GoodInfo good in db.GoodInfoes.Where(d=>d.UserID==CurrentUserID))
@@ -63,7 +67,12 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SelectedGoodID,OrderID,Quantity,Price,CustomerID")] NewOrderedGoodViewModel neworderedGood)
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
+
 
             if (ModelState.IsValid)
             {

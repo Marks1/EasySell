@@ -208,7 +208,6 @@
     <Compile Include="Controllers\OrderStatusController.cs" />
     <Compile Include="Controllers\PackageProvidersController.cs" />
     <Compile Include="Controllers\PackagesController.cs" />
-    <Compile Include="Controllers\SessionManager.cs" />
     <Compile Include="Controllers\StoragesController.cs" />
     <Compile Include="Controllers\TopMenuController.cs" />
     <Compile Include="Controllers\UsersController.cs" />

@@ -18,7 +18,11 @@ namespace EasySell.Controllers
         // GET: GoodInfoes
         public async Task<ActionResult> Index()
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if(Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
             //return View(await db.GoodInfoes.ToListAsync());
             List<GoodInfoViewModel> VMGoodInfo = new List<GoodInfoViewModel>();
             var AllGoods = await db.GoodInfoes.Where(d=>d.UserID==CurrentUserID).ToListAsync();                      
@@ -64,9 +68,14 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,Weight,Brand")] GoodInfo goodInfo)
         {
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
             if (ModelState.IsValid)
             {
-                goodInfo.UserID = new SessionManager().CurrentUser.Id;
+                goodInfo.UserID = CurrentUserID;
                 db.GoodInfoes.Add(goodInfo);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

@@ -18,7 +18,12 @@ namespace EasySell.Controllers
         // GET: Storages
         public ActionResult Index()
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
+
 
             List<StorageGoodViewModel> StorageList = new List<StorageGoodViewModel>();
             foreach (Storage storage in db.Storages.Where(d => d.OrderID == null && d.UserID == CurrentUserID))
@@ -72,7 +77,11 @@ namespace EasySell.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "SelectedGoodID,Cost,Quantity")] NewStorageGoodViewModel newstorage)
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
 
             int goodID = newstorage.SelectedGoodID;
             double cost = newstorage.Cost;

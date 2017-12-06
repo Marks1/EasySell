@@ -18,7 +18,12 @@ namespace EasySell.Controllers
         // GET: Orders
         public async Task<ActionResult> Index(int? status)
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
+            if (Session["CurrentUserID"] == null)
+            {
+                RedirectToAction("Login", "Home");
+            }
+            int CurrentUserID = (int)Session["CurrentUserID"];
+
 
             List<OrderViewModel> VMOrders = new List<OrderViewModel>();
             List<Order> Orders = new List<Order>();
@@ -214,7 +219,12 @@ namespace EasySell.Controllers
         {
             if (ModelState.IsValid)
             {
-                int CurrentUserID = new SessionManager().CurrentUser.Id;
+                if (Session["CurrentUserID"] == null)
+                {
+                    RedirectToAction("Login", "Home");
+                }
+                int CurrentUserID = (int)Session["CurrentUserID"];
+
                 Order neworder = new Order
                 {
                     UserID = CurrentUserID,
@@ -250,8 +260,7 @@ namespace EasySell.Controllers
         // GET: Storages/avaiable/5&3
         public async Task<ActionResult> MatchGoods(int? id)
         {
-            int CurrentUserID = new SessionManager().CurrentUser.Id;
-
+            int CurrentUserID = (int)Session["CurrentUserID"];
             OrderedGood orderedGood = await db.OrderedGoods.FindAsync(id);
             OrderedGoodViewModel orderedgood = new OrderedGoodViewModel
             {
