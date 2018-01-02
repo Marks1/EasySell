@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySell", "EasySell\EasySell.csproj", "{282CC8B0-62AB-4AD4-9D69-463846482AF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checker", "Checker\Checker.csproj", "{EF4DE38D-1CB5-4CDD-B4AD-3CB37C49AF81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{282CC8B0-62AB-4AD4-9D69-463846482AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{282CC8B0-62AB-4AD4-9D69-463846482AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{282CC8B0-62AB-4AD4-9D69-463846482AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF4DE38D-1CB5-4CDD-B4AD-3CB37C49AF81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF4DE38D-1CB5-4CDD-B4AD-3CB37C49AF81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF4DE38D-1CB5-4CDD-B4AD-3CB37C49AF81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4DE38D-1CB5-4CDD-B4AD-3CB37C49AF81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

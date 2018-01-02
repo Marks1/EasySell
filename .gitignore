@@ -4,3 +4,5 @@ EasySell/Web.config
 EasySell/bin/*
 EasySell/obj/*
 packages/*
+Checker/bin/*
+Checker/obj/*
